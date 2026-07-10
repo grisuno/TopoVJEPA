@@ -1,4 +1,4 @@
-# V-JEPA-Q: Quaternion-Enhanced Video World Model
+# Topo V-JEPA: Quaternion-Enhanced Video World Model
 
 A quaternion-enhanced Video Joint-Embedding Predictive Architecture with
 continuous spectral autoencoders, Fourier-domain topology, and a 2D torus
@@ -34,6 +34,20 @@ python model.py --mode train --scale small --epochs 100
 
 # Train with custom batch size
 python model.py --mode train --scale micro --epochs 5 --batch_size 2
+
+# Train with workers to activate MoE
+python model.py --mode train --scale small --epochs 1 --batch_size 16 --num_workers 8
+
+# Generate
+python model.py --mode generate --scale small --epochs 1 --backbone checkpoints_vjepa_q/latest.safetensors  
+
+# Run inference (saves .pt with tensors)                                                                                                                                                      
+python model.py --mode infer --scale small --resume checkpoints_vjepa_q_generator/decoder_latest.safetensors --output /tmp/my_video.pt
+
+# Convert .pt to MP4 videos
+python model.py --mode visualize --input /tmp/my_video.pt --output /tmp/generated.mp4
+
+
 ```
 
 ## Scale Presets
@@ -82,24 +96,6 @@ config = VJEPAQConfig(
 )
 ```
 
-## Key Bug Fixes (v2.0)
-
-1. **Patch embedding reshape crash** (original line 535): interpolate target size
-   was `PATCH_SIZE` (16x16) instead of `PATCH_H/PATCH_W` (14x14 for 224px),
-   causing shape mismatch. Also fixed `patch_to_quat` Linear input dim to include
-   motion channels.
-
-2. **Spatial position encoding broadcast**: `repeat(1, T, 1, 1)` kept batch=1,
-   causing silent dimension corruption on `reshape(B, ...)`. Fixed to `expand(B, ...)`.
-
-3. **ComplexSpectralLayer channel mixing**: elementwise `K * x_fft` broadcast
-   incorrectly. Fixed to `einsum('cihw,bihw->bchw', K, x_fft)`.
-
-4. **Torus brain latent dimension**: spectral AE outputs `D_LAT` but torus
-   projection expects `D_MODEL`. Added `latent_to_model` projection layer.
-
-5. **Security**: removed `warnings.filterwarnings('ignore')`; `torch.load`
-   uses `weights_only=True` to prevent pickle deserialization attacks.
 
 ## License
 

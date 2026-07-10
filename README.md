@@ -50,6 +50,12 @@ python model.py --mode visualize --input /tmp/my_video.pt --output /tmp/generate
 
 ```
 
+## Example
+
+https://github.com/user-attachments/assets/b3be4788-fb91-4488-abe7-6dd2f5716aa5
+
+
+
 ## Scale Presets
 
 | Scale | D_MODEL | Heads | Layers | Params | Image Size | Frames |

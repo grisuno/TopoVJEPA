@@ -1,15 +1,10 @@
 # CLAUDE.md — Project Working Contract
 
-> **Mission:** <_one-sentence statement of what this project is and why it exists. fill in per project._>
+> **Mission:** Quaternion-enhanced Video Joint-Embedding Predictive Architecture for unsupervised world model learning from video, supporting synthetic MovingShapes and real UCF101 human action fine-tuning.
 
 This file is the working contract for any agent — human or AI — that touches this
 repository. **These rules override default behavior.** If a rule conflicts with a
 convention read elsewhere, this file wins unless it explicitly defers.
-
-This is a **template**. Replace every angle-bracket placeholder (`<_..._>`) with
-the project's real values before the first commit. Delete any section that does
-not apply, but do not weaken the doctrine to make a section fit — if a section
-does not fit, the project probably needs a different shape.
 
 ---
 
@@ -70,8 +65,7 @@ computes and talks to the outside world, split it.
 
 ## 2. Style and Conventions
 
-- **Language and stack:** <_primary language, runtime/framework, and version.
-  pin versions that matter._> This is a template; the project fills this in.
+- **Language and stack:** Python 3.10+, PyTorch 2.0+, NumPy, torchcodec (for UCF101 video decoding).
   Within a project, the stack is fixed — do not introduce a second language or
   framework mid-stream without a spec that justifies it.
 - **Identifiers and strings in code: English.** Comments explain a non-obvious
@@ -158,12 +152,11 @@ the testable behavior.
 
 | Component | Technology | Note |
 | :-- | :-- | :-- |
-| <_component_> | <_language/framework/version_> | <_constraint or reason_> |
-| Tests | <_framework_> | TDD. <_install/run command_>. |
-| Static analysis | <_tool_> | CI gate. |
-| Dynamic analysis | <_sanitizer/leak checker_> | <_command_>. |
-| Fuzzing | <_fuzzer_> | <_command/targets_>. |
-| Packaging | <_system_> | <_command_>. |
+| Model | Python 3.13, PyTorch 2.13 | Core VJEPAQ implementation in model.py |
+| UCF101 Dataset | torchcodec 0.14 | Video decoding backend for fine-tuning |
+| Tests | unittest + pytest | Tests in model.py (unittest) + tests/ (pytest) |
+| Formatting | None | Manual enforcement of PEP 8 |
+| Packaging | None | Run directly: `python model.py` |
 
 **The Makefile / build script is the single source of truth for commands.**
 Wrapper scripts are thin delegators. If a wrapper duplicates build logic it
@@ -187,11 +180,11 @@ resolved, move it to the resolved log with the evidence link.
 
 ## 5. Build, Hardening, and Verification
 
-- **Build command:** &lt;_single command from the Makefile/build script_&gt;.
-- **Test command:** &lt;_single command_&gt;.
-- **Static analysis command:** &lt;_single command_&gt;.
-- **Dynamic analysis command:** &lt;_single command_&gt;.
-- **Fuzz command:** &lt;_single command_&gt;.
+- **Build command:** N/A (Python source, no build step).
+- **Test command:** `python model.py --test` (model tests) and `python -m pytest tests/ -v` (module tests).
+- **Static analysis command:** `python -m py_compile model.py src/ucf101_dataset.py tests/test_ucf101_dataset.py` (syntax check).
+- **Dynamic analysis command:** None (no sanitizers for Python).
+- **Fuzz command:** None (no fuzz targets yet).
 
 Every PR / integration must pass build + test + static analysis clean before
 merge. Dynamic analysis and fuzzing are gates for paths that take external input.
@@ -204,17 +197,19 @@ new command, add it to the build file, not to a stray script.
 ## 6. Repository Structure
 
 ```
-<_project_root_>/
+TopoVJEPA/
 ├── CLAUDE.md                  # this file
-├── <_build file_>             # single source of truth for commands
+├── model.py                   # VJEPAQ model, trainers, synthetic dataset
+├── app.py                     # Config entry point
+├── README.md                  # Project documentation
 ├── spec/                      # SDD specifications (Given-When-Then)
-│   └── <module>.md
-├── src/                       # implementations
-│   └── <module>.<ext>
-├── tests/                     # test suites
-│   └── test_<module>.<ext>
-├── docs/                      # additional documentation
-└── <_other project dirs_>
+│   └── ucf101_dataset.md      # UCF101 dataset spec
+├── src/                       # Module implementations
+│   ├── __init__.py
+│   └── ucf101_dataset.py      # UCF101 dataset contract
+├── tests/                     # Test suites
+│   └── test_ucf101_dataset.py # UCF101 dataset tests
+└── docs/                      # Additional documentation
 ```
 
 &gt; Adapt to the project&#x27;s real layout. The invariant: spec, src, and tests live
@@ -233,26 +228,22 @@ new command, add it to the build file, not to a stray script.
 
 | Component | Status | Evidence |
 | :-- | :-- | :-- |
-| &lt;_component_&gt; | &lt;_closed / pending / blocker_&gt; | &lt;_what proves the status_&gt; |
+| VJEPAQ model | closed | 39 unittest tests in model.py pass |
+| UCF101 dataset | closed | 22 pytest tests in tests/test_ucf101_dataset.py pass |
 
 **Active doctrine decisions** (not evident in the code; do not re-litigate):
 
-- **&lt;_doctrine name_&gt;:** &lt;_one-line statement and the reason it is
-  non-negotiable_.&gt; See `[[_project-tag_]]`.
-
-- Add one bullet per settled decision that a new contributor would otherwise
-  re-open. If a decision is overturned, update the bullet — do not leave stale
-  doctrine.
+- **Dataset per contract:** Each dataset lives in its own module under `src/` with its own `Config` dataclass, spec under `spec/`, and tests under `tests/`. The model selects datasets via `DATA_MODE` in `VJEPAQConfig`.
+- **Resize flag:** Each dataset that supports spatial resize exposes a `resize: bool` flag and `output_size: Tuple[int, int]` in its config. Default output for UCF101 fine-tuning is 64x64.
+- **Video backend abstraction:** Video decoding uses torchcodec (torchvision >= 0.28) with fallback to torchvision.io.read_video (torchvision < 0.28). Backend is detected at import time.
 
 ### 7.2 Closed milestones
 
-- **&lt;_phase name_&gt;:** &lt;_what was delivered and what proves it. note if
-  validation with real hardware/environment is still pending._&gt;
+- **UCF101 dataset contract:** spec/ucf101_dataset.md + tests/test_ucf101_dataset.py (22 tests) + src/ucf101_dataset.py. Supports resize flag, annotation download, config validation, and compatibility with VJEPAQ trainer pattern.
 
 ### 7.3 Roadmap — to cross
 
-- **&lt;_next phase_&gt;:** &lt;_what unblocks it, what evidence is needed, what the
-  validation criteria are._&gt;
+- **Real video training pipeline:** End-to-end fine-tuning workflow with pre-trained backbone, UCF101 data, and checkpoint save/load for decoder-only or full fine-tuning.
 
 **Ongoing background:** fuzzing of input paths; static/dynamic analysis hygiene;
 documentation post-validation; continuous boyscout-mode debt extinction.

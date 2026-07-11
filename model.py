@@ -122,6 +122,14 @@ class VJEPAQConfig:
     SYNTHETIC_CANVAS_SIZE: int = 64
     SYNTHETIC_NUM_SAMPLES: int = 10000
 
+    UCF101_ROOT: str = './data/ucf101'
+    UCF101_ANNOTATION_DIR: str = ''
+    UCF101_FRAMES_PER_CLIP: int = 16
+    UCF101_OUTPUT_SIZE: Tuple[int, int] = (64, 64)
+    UCF101_RESIZE: bool = True
+    UCF101_DOWNLOAD_ANNOTATIONS: bool = True
+    UCF101_SPLIT_INDEX: int = 1
+
     DEVICE: str = ''
     RANDOM_SEED: int = 42
     CHECKPOINT_DIR: str = 'checkpoints_vjepa_q'
@@ -139,7 +147,7 @@ class VJEPAQConfig:
         assert self.BATCH_SIZE > 0
         assert self.GRADIENT_CLIP_NORM > 0.0
         assert self.TORUS_SOFT_ASSIGN_TEMPERATURE > 0.0
-        assert self.DATA_MODE in ('synthetic', 'video_dir')
+        assert self.DATA_MODE in ('synthetic', 'video_dir', 'ucf101')
         assert self.GOE_GUE_TARGET in ('goe', 'gue')
         assert self.CONTEXT_FRAMES + self.PREDICT_FRAMES <= self.NUM_FRAMES, (
             f"NUM_FRAMES ({self.NUM_FRAMES}) must be >= CONTEXT_FRAMES + PREDICT_FRAMES "
@@ -1737,6 +1745,9 @@ class VJEPAQGeneratorTrainer:
         self.optimizer.zero_grad(set_to_none=True)
 
         cfg = self.config
+        total_steps = len(dataloader)
+
+        self.logger.info("Epoch %d — training on %d batches", epoch, total_steps)
 
         for batch_idx, video in enumerate(dataloader):
             video = video.to(cfg.DEVICE)
@@ -2058,6 +2069,8 @@ class VJEPAQTrainer:
         n_batches = 0
         accum_loss = 0.0
         self.optimizer.zero_grad(set_to_none=True)
+
+        self.logger.info("Epoch %d — training on %d batches", epoch, len(dataloader))
 
         for batch_idx, video in enumerate(dataloader):
             video = video.to(self.config.DEVICE)
@@ -2708,6 +2721,37 @@ def _visualize_video(input_path: str, output_path: str) -> None:
 # ============================================================================
 
 
+def _create_dataloader(config: VJEPAQConfig) -> torch.utils.data.DataLoader:
+    """Create dataset and DataLoader based on config.DATA_MODE."""
+    if config.DATA_MODE == 'ucf101':
+        from src.ucf101_dataset import UCF101Config, create_ucf101_dataloader
+        ucf101_config = UCF101Config(
+            root=config.UCF101_ROOT,
+            annotation_dir=config.UCF101_ANNOTATION_DIR,
+            frames_per_clip=config.UCF101_FRAMES_PER_CLIP,
+            output_size=config.UCF101_OUTPUT_SIZE,
+            resize=config.UCF101_RESIZE,
+            split='train',
+            split_index=config.UCF101_SPLIT_INDEX,
+            download_annotations=config.UCF101_DOWNLOAD_ANNOTATIONS,
+            num_workers=config.NUM_WORKERS,
+            batch_size=config.BATCH_SIZE,
+            shuffle=True,
+        )
+        loader = create_ucf101_dataloader(ucf101_config)
+        loader._dataset_config = ucf101_config
+        return loader
+    dataset = MovingShapesDataset(config)
+    return torch.utils.data.DataLoader(
+        dataset,
+        batch_size=config.BATCH_SIZE,
+        shuffle=True,
+        num_workers=config.NUM_WORKERS,
+        drop_last=True,
+        worker_init_fn=lambda wid: torch.initial_seed(),
+    )
+
+
 def main() -> None:
     """Entry point: parse args, create config, build dataset, train or generate."""
     parser = argparse.ArgumentParser(description='V-JEPA-Q Training and Generation')
@@ -2720,7 +2764,7 @@ def main() -> None:
                         help='Path to .safetensors for frozen VJEPAQ backbone')
     parser.add_argument('--batch_size', type=int, default=None)
     parser.add_argument('--num_workers', type=int, default=None)
-    parser.add_argument('--data_mode', choices=['synthetic', 'video_dir'], default=None)
+    parser.add_argument('--data_mode', choices=['synthetic', 'video_dir', 'ucf101'], default=None)
     parser.add_argument('--output', type=str, default='generated_video.pt',
                         help='Output path for generated video (.pt)')
     parser.add_argument('--input', type=str, default='',
@@ -2763,14 +2807,7 @@ def main() -> None:
             logger.info("Loaded backbone weights from %s", config.DECODER_LOAD_PATH)
         gen_trainer.load_checkpoint(args.resume)
         gen_trainer.model.eval()
-        dataset = MovingShapesDataset(config)
-        dataloader = torch.utils.data.DataLoader(
-            dataset,
-            batch_size=config.BATCH_SIZE,
-            shuffle=True,
-            num_workers=config.NUM_WORKERS,
-            drop_last=True,
-        )
+        dataloader = _create_dataloader(config)
         batch = next(iter(dataloader)).to(config.DEVICE)
         with torch.no_grad():
             out = gen_trainer.model(batch)
@@ -2812,14 +2849,7 @@ def main() -> None:
             logger.info("Loaded backbone weights from %s", config.DECODER_LOAD_PATH)
         if args.resume:
             gen_trainer.load_checkpoint(args.resume)
-        dataset = MovingShapesDataset(config)
-        dataloader = torch.utils.data.DataLoader(
-            dataset,
-            batch_size=config.BATCH_SIZE,
-            shuffle=True,
-            num_workers=config.NUM_WORKERS,
-            drop_last=True,
-        )
+        dataloader = _create_dataloader(config)
         start_time = time.time()
         for epoch in range(args.epochs):
             metrics = gen_trainer.train_epoch(dataloader, epoch)
@@ -2841,14 +2871,7 @@ def main() -> None:
         trainer.load_checkpoint(args.resume)
 
     if args.mode == 'train':
-        dataset = MovingShapesDataset(config)
-        dataloader = torch.utils.data.DataLoader(
-            dataset,
-            batch_size=config.BATCH_SIZE,
-            shuffle=True,
-            num_workers=config.NUM_WORKERS,
-            drop_last=True,
-        )
+        dataloader = _create_dataloader(config)
 
         total_steps = len(dataloader) * args.epochs
         logger.info("Total training steps: %d", total_steps)
@@ -2868,8 +2891,7 @@ def main() -> None:
 
     elif args.mode == 'eval':
         logger.info("Evaluation mode: forward pass only")
-        dataset = MovingShapesDataset(config)
-        loader = torch.utils.data.DataLoader(dataset, batch_size=config.BATCH_SIZE)
+        loader = _create_dataloader(config)
         video = next(iter(loader)).to(config.DEVICE)
         with torch.no_grad():
             out = trainer.model(video)

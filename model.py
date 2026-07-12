@@ -21,11 +21,13 @@ import argparse
 import json
 import logging
 import math
+import os
+import signal
 import sys
 import time
 import unittest
 from collections import deque
-from dataclasses import dataclass
+from dataclasses import dataclass, fields as dc_fields
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Union
 
@@ -35,6 +37,8 @@ import torch.nn as nn
 import safetensors.torch
 import torch.nn.functional as F
 from torch.utils.checkpoint import checkpoint as grad_ckpt
+
+from src.quaternion_ops import QuaternionOps, QuaternionLinear
 
 
 # ============================================================================
@@ -177,6 +181,56 @@ class VJEPAQConfig:
         self.N_TORUS_NODES: int = self.TORUS_RADIAL_BINS * self.TORUS_ANGULAR_BINS
         self.TORUS_GRID_SIZE = self.N_TORUS_NODES
 
+    def to_dict(self) -> Dict[str, Any]:
+        valid_keys = {f.name for f in dc_fields(VJEPAQConfig)}
+        return {k: v for k, v in self.__dict__.items() if k in valid_keys and not k.startswith('_')}
+
+    def to_json(self) -> str:
+        d = self.to_dict()
+        for key in ('IMAGE_SIZE', 'PATCH_SIZE', 'MASK_PATCH_SIZE', 'UCF101_OUTPUT_SIZE'):
+            if key in d:
+                d[key] = list(d[key])
+        return json.dumps(d, indent=2, default=str)
+
+    @classmethod
+    def from_json(cls, path_or_str: str) -> 'VJEPAQConfig':
+        p = Path(path_or_str)
+        if len(path_or_str) < 256 and p.exists():
+            with open(p) as f:
+                d = json.load(f)
+        else:
+            d = json.loads(path_or_str)
+        for key in ('IMAGE_SIZE', 'PATCH_SIZE', 'MASK_PATCH_SIZE', 'UCF101_OUTPUT_SIZE'):
+            if key in d:
+                d[key] = tuple(d[key])
+        valid_keys = {f.name for f in dc_fields(cls)}
+        d = {k: v for k, v in d.items() if k in valid_keys}
+        return cls(**d)
+
+    @staticmethod
+    def auto_batch_size(config: 'VJEPAQConfig', min_batch: int = 1, max_batch: int = 512) -> int:
+        dev = config.DEVICE
+        if 'cuda' not in dev:
+            return min_batch
+        lo, hi = min_batch, max_batch
+        best = min_batch
+        while lo <= hi:
+            mid = (lo + hi) // 2
+            cfg = VJEPAQConfig(**{**config.to_dict(), 'BATCH_SIZE': mid, 'DEVICE': dev})
+            try:
+                model = VJEPAQ(cfg).to(dev)
+                video = torch.randn(mid, cfg.NUM_FRAMES, 3, *cfg.IMAGE_SIZE, device=dev)
+                with torch.amp.autocast(dev.split(':')[0], enabled=cfg.USE_AMP):
+                    _ = model(video)
+                del model, video
+                torch.cuda.empty_cache()
+                best = mid
+                lo = mid + 1
+            except (RuntimeError, torch.cuda.OutOfMemoryError):
+                hi = mid - 1
+                torch.cuda.empty_cache()
+        return best
+
 
 # ============================================================================
 # UTILITY
@@ -203,121 +257,6 @@ def _set_seed(seed: int, device: str) -> None:
 
 def _count_parameters(module: nn.Module) -> int:
     return sum(p.numel() for p in module.parameters() if p.requires_grad)
-
-
-# ============================================================================
-# QUATERNION ALGEBRA (with Lie group exp/log)
-# ============================================================================
-
-
-class QuaternionOps:
-    """Pure quaternion operations. Convention: [w, x, y, z].
-
-    Includes exponential and logarithmic maps for the Lie group SU(2) / so(3).
-    The log map converts quaternion multiplication to vector addition in the
-    tangent space (Lie algebra). The exp map converts back.
-    """
-
-    @staticmethod
-    def hamilton_product(q1: torch.Tensor, q2: torch.Tensor) -> torch.Tensor:
-        w1, x1, y1, z1 = q1[..., 0], q1[..., 1], q1[..., 2], q1[..., 3]
-        w2, x2, y2, z2 = q2[..., 0], q2[..., 1], q2[..., 2], q2[..., 3]
-        return torch.stack([
-            w1 * w2 - x1 * x2 - y1 * y2 - z1 * z2,
-            w1 * x2 + x1 * w2 + y1 * z2 - z1 * y2,
-            w1 * y2 - x1 * z2 + y1 * w2 + z1 * x2,
-            w1 * z2 + x1 * y2 - y1 * x2 + z1 * w2,
-        ], dim=-1)
-
-    @staticmethod
-    def normalize(q: torch.Tensor, eps: float = 1e-8) -> torch.Tensor:
-        return q / (q.norm(dim=-1, keepdim=True) + eps)
-
-    @staticmethod
-    def conjugate(q: torch.Tensor) -> torch.Tensor:
-        return q * q.new_tensor([1, -1, -1, -1])
-
-    @staticmethod
-    def rotate_vector(v: torch.Tensor, q: torch.Tensor) -> torch.Tensor:
-        zero = torch.zeros(*v.shape[:-1], 1, device=v.device, dtype=v.dtype)
-        v_q = torch.cat([zero, v], dim=-1)
-        q_c = QuaternionOps.conjugate(q)
-        rotated = QuaternionOps.hamilton_product(
-            QuaternionOps.hamilton_product(q, v_q), q_c)
-        return rotated[..., 1:]
-
-    @staticmethod
-    def log(q: torch.Tensor, eps: float = 1e-8) -> torch.Tensor:
-        """Logarithmic map from SU(2) to so(3) (tangent space).
-
-        Converts a unit quaternion q = [w, x, y, z] to a pure quaternion
-        v = [0, theta*u] where u is the unit axis and theta = arccos(w).
-        In the tangent space, quaternion multiplication becomes vector addition
-        (via BCH approximation: log(q1 * q2) approx log(q1) + log(q2)).
-        """
-        w = q[..., 0:1].clamp(-1.0 + eps, 1.0 - eps)
-        v = q[..., 1:]
-        v_norm = v.norm(dim=-1, keepdim=True)
-        theta = torch.acos(w)
-        scale = torch.where(v_norm > eps, theta / v_norm, torch.ones_like(v_norm))
-        return torch.cat([torch.zeros_like(w), v * scale], dim=-1)
-
-    @staticmethod
-    def exp(q: torch.Tensor, eps: float = 1e-8) -> torch.Tensor:
-        """Exponential map from so(3) to SU(2).
-
-        Converts a pure quaternion v = [0, theta*u] back to a unit quaternion
-        q = [cos(theta), sin(theta)*u]. This is the inverse of log().
-        """
-        v = q[..., 1:]
-        theta = v.norm(dim=-1, keepdim=True)
-        scale = torch.where(theta > eps, torch.sin(theta) / theta, torch.ones_like(theta))
-        return torch.cat([torch.cos(theta), v * scale], dim=-1)
-
-    @staticmethod
-    def lie_product(q1: torch.Tensor, q2: torch.Tensor, eps: float = 1e-8) -> torch.Tensor:
-        """Approximate quaternion product via Lie algebra addition.
-
-        Instead of Hamilton product (O(n^2) cross terms), uses:
-            q1 * q2 approx exp(log(q1) + log(q2))
-        which converts multiplication to element-wise addition in the
-        tangent space. Exact for commuting quaternions; BCH-approximate
-        for non-commuting.
-        """
-        return QuaternionOps.exp(QuaternionOps.log(q1, eps) + QuaternionOps.log(q2, eps))
-
-
-class QuaternionLinear(nn.Module):
-    """Linear transform using quaternion Hamilton product.
-
-    Input and output dimensions must be multiples of 4. Weight is
-    factorised into four coupled subspaces via Hamilton product.
-    """
-
-    def __init__(self, in_features: int, out_features: int, bias: bool = True):
-        super().__init__()
-        assert in_features % 4 == 0 and out_features % 4 == 0
-        self.in_q = in_features // 4
-        self.out_q = out_features // 4
-
-        self.Ww = nn.Linear(self.in_q, self.out_q, bias=False)
-        self.Wx = nn.Linear(self.in_q, self.out_q, bias=False)
-        self.Wy = nn.Linear(self.in_q, self.out_q, bias=False)
-        self.Wz = nn.Linear(self.in_q, self.out_q, bias=False)
-        self.bias = nn.Parameter(torch.zeros(out_features)) if bias else None
-
-        for w in [self.Ww, self.Wx, self.Wy, self.Wz]:
-            nn.init.normal_(w.weight, std=0.02)
-
-    def forward(self, x: torch.Tensor) -> torch.Tensor:
-        d = self.in_q
-        xw, xx, xy, xz = x[..., :d], x[..., d:2 * d], x[..., 2 * d:3 * d], x[..., 3 * d:]
-        ow = self.Ww(xw) - self.Wx(xx) - self.Wy(xy) - self.Wz(xz)
-        ox = self.Ww(xx) + self.Wx(xw) + self.Wy(xz) - self.Wz(xy)
-        oy = self.Ww(xy) - self.Wx(xz) + self.Wy(xw) + self.Wz(xx)
-        oz = self.Ww(xz) + self.Wx(xy) - self.Wy(xx) + self.Wz(xw)
-        out = torch.cat([ow, ox, oy, oz], dim=-1)
-        return out + self.bias if self.bias is not None else out
 
 
 # ============================================================================
@@ -441,14 +380,12 @@ class QuaternionSpectralLayer(nn.Module):
 
     @staticmethod
     def _gauss_contract(W: torch.Tensor, X: torch.Tensor) -> torch.Tensor:
-        device_type = W.device.type if W.device.type in ("cuda", "cpu") else "cpu"
-        with torch.amp.autocast(device_type=device_type, enabled=False):
-            Wr, Wi = W.real.float(), W.imag.float()
-            Xr, Xi = X.real.float(), X.imag.float()
-            m1 = torch.einsum("iohw,bihw->bohw", Wr, Xr)
-            m2 = torch.einsum("iohw,bihw->bohw", Wi, Xi)
-            m3 = torch.einsum("iohw,bihw->bohw", Wr + Wi, Xr + Xi)
-            return torch.complex(m1 - m2, m3 - m1 - m2)
+        Wr, Wi = W.real, W.imag
+        Xr, Xi = X.real, X.imag
+        m1 = torch.einsum("iohw,bihw->bohw", Wr, Xr)
+        m2 = torch.einsum("iohw,bihw->bohw", Wi, Xi)
+        m3 = torch.einsum("iohw,bihw->bohw", Wr + Wi, Xr + Xi)
+        return torch.complex(m1 - m2, m3 - m1 - m2)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         q = self.in_q
@@ -638,26 +575,22 @@ class VJEPAMasker:
         N = cfg.NUM_PATCHES_PER_FRAME
         total = T * N
 
-        encoder_mask = torch.zeros(batch_size, total, dtype=torch.bool, device=device)
+        bh, bw = cfg.MASK_PATCH_SIZE
+        grid_h = math.ceil(cfg.PATCH_H / bh)
+        grid_w = math.ceil(cfg.PATCH_W / bw)
+
+        mask_blocks = torch.rand(batch_size, T, grid_h, grid_w, device=device) > cfg.ENCODER_MASK_RATIO
+        encoder_full = mask_blocks.repeat_interleave(bh, dim=2).repeat_interleave(bw, dim=3)
+        encoder_mask = encoder_full[:, :, :cfg.PATCH_H, :cfg.PATCH_W].reshape(batch_size, total).to(torch.bool)
+
         predictor_mask = torch.zeros(batch_size, total, dtype=torch.bool, device=device)
-
+        masked_positions = ~encoder_mask
         for b in range(batch_size):
-            for t in range(T):
-                frame_mask = self._generate_block_mask(
-                    cfg.PATCH_H, cfg.PATCH_W,
-                    cfg.ENCODER_MASK_RATIO,
-                    cfg.MASK_PATCH_SIZE,
-                    device,
-                )
-                encoder_mask[b, t * N:(t + 1) * N] = frame_mask.flatten()
-
-            masked_indices = ~encoder_mask[b]
-            num_to_predict = int(masked_indices.sum().item() * cfg.PREDICTOR_MASK_RATIO)
-            predict_indices = masked_indices.nonzero(as_tuple=True)[0]
-            if num_to_predict > 0 and len(predict_indices) > 0:
-                perm = torch.randperm(len(predict_indices), device=device)[:num_to_predict]
-                selected = predict_indices[perm]
-                predictor_mask[b, selected] = True
+            masked_idx = masked_positions[b].nonzero(as_tuple=True)[0]
+            num_to_predict = int(masked_idx.shape[0] * cfg.PREDICTOR_MASK_RATIO)
+            if num_to_predict > 0:
+                perm = torch.randperm(masked_idx.shape[0], device=device)[:num_to_predict]
+                predictor_mask[b, masked_idx[perm]] = True
 
         return {
             'encoder_mask': encoder_mask,
@@ -1113,15 +1046,11 @@ class VJEPAQEncoder(nn.Module):
 
         x = self.final_norm(x)
 
-        representations = []
-        for b in range(B):
-            vis_idx = mask[b].nonzero(as_tuple=True)[0]
-            representations.append(x[b, vis_idx])
-
-        max_vis = max(r.shape[0] for r in representations)
-        padded = torch.zeros(B, max_vis, D, device=video.device)
-        for b, r in enumerate(representations):
-            padded[b, :r.shape[0]] = r
+        sorted_mask, sort_indices = mask.sort(dim=1, descending=True, stable=True)
+        vis_counts = sorted_mask.sum(dim=1)
+        max_vis = vis_counts.max().item()
+        gathered = torch.gather(x, 1, sort_indices.unsqueeze(-1).expand(-1, -1, D))
+        padded = gathered[:, :max_vis, :].contiguous() if max_vis > 0 else torch.zeros(B, 0, D, device=video.device)
 
         return padded, total_aux / max(len(self.blocks), 1)
 
@@ -1163,10 +1092,14 @@ class VJEPAQPredictor(nn.Module):
         cfg = self.config
         total_patches = cfg.NUM_PATCHES
 
+        sorted_mask, sort_indices = encoder_mask.sort(dim=1, descending=True, stable=True)
+        vis_counts = sorted_mask.sum(dim=1)
+        max_vis = vis_counts.max().item()
         full_seq = torch.zeros(B, total_patches, D, device=encoder_output.device)
-        for b in range(B):
-            vis_idx = encoder_mask[b].nonzero(as_tuple=True)[0]
-            full_seq[b, vis_idx] = encoder_output[b, :vis_idx.shape[0]]
+        if max_vis > 0:
+            valid = torch.arange(max_vis, device=encoder_output.device).unsqueeze(0) < vis_counts.unsqueeze(1)
+            src = encoder_output[:, :max_vis] * valid.unsqueeze(-1)
+            full_seq.scatter_(1, sort_indices[:, :max_vis].unsqueeze(-1).expand(-1, -1, D), src)
 
         full_seq = full_seq + self.pred_pos_embed[:, :total_patches, :]
 
@@ -1180,15 +1113,12 @@ class VJEPAQPredictor(nn.Module):
 
         x = self.final_norm(x)
 
-        predictions = []
-        for b in range(B):
-            pred_idx = predictor_mask[b].nonzero(as_tuple=True)[0]
-            predictions.append(self.pred_head(x[b, pred_idx]))
-
-        max_pred = max(p.shape[0] for p in predictions)
-        padded = torch.zeros(B, max_pred, D, device=encoder_output.device)
-        for b, p in enumerate(predictions):
-            padded[b, :p.shape[0]] = p
+        sorted_pred, pred_sort_indices = predictor_mask.sort(dim=1, descending=True, stable=True)
+        pred_counts = sorted_pred.sum(dim=1)
+        max_pred = pred_counts.max().item()
+        head_out = self.pred_head(x)
+        gathered_pred = torch.gather(head_out, 1, pred_sort_indices.unsqueeze(-1).expand(-1, -1, D))
+        padded = gathered_pred[:, :max_pred, :].contiguous() if max_pred > 0 else torch.zeros(B, 0, D, device=encoder_output.device)
 
         return padded, total_aux / max(len(self.blocks), 1)
 
@@ -1421,6 +1351,12 @@ class VJEPAQ(nn.Module):
 
         self.gradient_buffer: deque = deque(maxlen=50)
 
+    @classmethod
+    def from_preset(cls, scale: str = 'micro', **overrides) -> 'VJEPAQ':
+        assert scale in SCALE_PRESETS, f"Unknown preset: {scale}. Choose from {list(SCALE_PRESETS.keys())}"
+        cfg = VJEPAQConfig(**{**SCALE_PRESETS[scale], **overrides})
+        return cls(cfg)
+
     def forward(self, video: torch.Tensor) -> Dict[str, torch.Tensor]:
         B = video.shape[0]
         device = video.device
@@ -1440,25 +1376,18 @@ class VJEPAQ(nn.Module):
         predictions, predictor_aux = self.predictor(
             encoder_output, encoder_mask, predictor_mask)
 
-        targets = []
-        for b in range(B):
-            pred_idx = predictor_mask[b].nonzero(as_tuple=True)[0]
-            targets.append(target_output[b, pred_idx])
-
-        max_pred = predictions.shape[1]
-        padded_targets = torch.zeros_like(predictions)
-        for b, t in enumerate(targets):
-            padded_targets[b, :t.shape[0]] = t
+        sorted_pred, pred_sort_indices = predictor_mask.sort(dim=1, descending=True, stable=True)
+        pred_counts = sorted_pred.sum(dim=1)
+        max_pred = pred_counts.max().item()
+        gathered_target = torch.gather(
+            target_output, 1, pred_sort_indices.unsqueeze(-1).expand(-1, -1, target_output.shape[-1])
+        )
+        padded_targets = gathered_target[:, :max_pred, :].contiguous() if max_pred > 0 else torch.zeros_like(predictions)
 
         pred_norm = F.normalize(predictions, dim=-1)
         target_norm = F.normalize(padded_targets, dim=-1)
 
-        pred_lengths = torch.tensor([t.shape[0] for t in targets], device=device)
-        max_len = pred_lengths.max().item()
-
-        loss_mask = torch.zeros(B, max_len, device=device, dtype=torch.bool)
-        for b, l in enumerate(pred_lengths):
-            loss_mask[b, :l] = True
+        loss_mask = torch.arange(max_pred, device=device).unsqueeze(0) < pred_counts.unsqueeze(1)
 
         cos_sim = (pred_norm * target_norm).sum(dim=-1)
         cos_sim = cos_sim * loss_mask.float()
@@ -2005,15 +1934,151 @@ class VideoDataset(torch.utils.data.Dataset):
 
 
 # ============================================================================
+# AUTOMATION INFRASTRUCTURE
+# ============================================================================
+
+
+class SWACallback:
+    """Stochastic Weight Averaging via exponential moving average.
+
+    Mantiene un promedio móvil de los pesos: w_swa = decay * w_swa + (1-decay) * w
+    Al final del entrenamiento, copia w_swa al modelo para mejor generalización.
+    """
+
+    def __init__(self, model: nn.Module, decay: float = 0.999, start_step: int = 0):
+        self.decay = decay
+        self.start_step = start_step
+        self.swa_state: Dict[str, torch.Tensor] = {}
+        self._enabled = False
+
+        for name, param in model.named_parameters():
+            if param.requires_grad:
+                self.swa_state[name] = param.data.clone().detach()
+
+    def step(self, model: nn.Module, global_step: int) -> None:
+        if global_step < self.start_step:
+            return
+        if not self._enabled:
+            self._enabled = True
+        with torch.no_grad():
+            for name, param in model.named_parameters():
+                if param.requires_grad and name in self.swa_state:
+                    self.swa_state[name].mul_(self.decay).add_(
+                        param.data, alpha=1.0 - self.decay)
+
+    def swap_swa(self, model: nn.Module) -> Dict[str, torch.Tensor]:
+        saved = {}
+        with torch.no_grad():
+            for name, param in model.named_parameters():
+                if name in self.swa_state:
+                    saved[name] = param.data.clone()
+                    param.data.copy_(self.swa_state[name])
+        return saved
+
+    def restore(self, model: nn.Module, saved: Dict[str, torch.Tensor]) -> None:
+        with torch.no_grad():
+            for name, param in model.named_parameters():
+                if name in saved:
+                    param.data.copy_(saved[name])
+
+
+class PhaseAwareLRCallback:
+    """Ajusta LR según el condition number κ del phase tracker.
+
+    Matemática: la tasa de convergencia de SGD es O(exp(-k/κ)).
+    Cuando κ > threshold, reducimos LR para mantener estabilidad.
+    Nuevo LR = lr_base / sqrt(min(κ, max_kappa))
+    """
+
+    def __init__(self, kappa_threshold: float = 100.0, max_kappa: float = 10000.0):
+        self.kappa_threshold = kappa_threshold
+        self.max_kappa = max_kappa
+
+    def get_lr_scale(self, kappa: float) -> float:
+        if kappa < self.kappa_threshold:
+            return 1.0
+        return 1.0 / math.sqrt(min(kappa, self.max_kappa) / self.kappa_threshold)
+
+
+class PreemptionHandler:
+    """Captura SIGTERM para checkpoint seguro antes de morir."""
+
+    def __init__(self):
+        self._checkpoint_fn = None
+        self._original_handler = signal.getsignal(signal.SIGTERM)
+
+    def arm(self, checkpoint_fn) -> None:
+        self._checkpoint_fn = checkpoint_fn
+        signal.signal(signal.SIGTERM, self._handler)
+
+    def disarm(self) -> None:
+        signal.signal(signal.SIGTERM, self._original_handler)
+
+    def _handler(self, signum, frame) -> None:
+        if self._checkpoint_fn is not None:
+            self._checkpoint_fn()
+        sys.exit(128 + signum)
+
+
+class WandBAdapter:
+    """Adapter ligero para Weights & Biases logging.
+
+    Uso:
+        wandb = WandBAdapter(project='topovjepa', config=trainer.config)
+        wandb.log(snap)  # en cada step
+    """
+
+    def __init__(self, project: str = 'topovjepa', config=None, enabled: bool = True):
+        self.enabled = enabled
+        if not enabled:
+            return
+        try:
+            import wandb
+            wandb.init(project=project, config=config)
+            self._wandb = wandb
+        except ImportError:
+            print("wandb not installed. Install with: pip install wandb")
+            self.enabled = False
+
+    def log(self, data: Dict[str, Any], step: Optional[int] = None) -> None:
+        if not self.enabled:
+            return
+        self._wandb.log(data, step=step)
+
+    def finish(self) -> None:
+        if not self.enabled:
+            return
+        self._wandb.finish()
+
+
+# ============================================================================
 # TRAINER
 # ============================================================================
 
 
 class VJEPAQTrainer:
-    """Training loop for V-JEPA-Q with AMP, gradient clipping, and phase tracking."""
+    """Training loop for V-JEPA-Q with AMP, gradient clipping, and phase tracking.
 
-    def __init__(self, config: VJEPAQConfig):
+    Optional automation:
+        swa: SWACallback for stochastic weight averaging
+        phase_lr: PhaseAwareLRCallback for kappa-based LR adjustment
+        preempt: PreemptionHandler for SIGTERM-safe checkpointing
+        wandb: WandBAdapter for experiment tracking
+    """
+
+    def __init__(
+        self,
+        config: VJEPAQConfig,
+        swa: Optional[SWACallback] = None,
+        phase_lr: Optional[PhaseAwareLRCallback] = None,
+        preempt: Optional[PreemptionHandler] = None,
+        wandb: Optional[WandBAdapter] = None,
+    ):
         self.config = config
+        self.swa = swa
+        self.phase_lr = phase_lr
+        self.preempt = preempt
+        self.wandb = wandb
         self.logger = _setup_logger("VJEPAQTrainer")
         _set_seed(config.RANDOM_SEED, config.DEVICE)
 
@@ -2050,12 +2115,27 @@ class VJEPAQTrainer:
         self.checkpoint_dir = Path(config.CHECKPOINT_DIR)
         self.checkpoint_dir.mkdir(parents=True, exist_ok=True)
 
+        if self.preempt is not None:
+            self.preempt.arm(self._emergency_save)
+
+    def _emergency_save(self) -> None:
+        self.logger.warning("SIGTERM received — saving emergency checkpoint")
+        self.save_checkpoint(self.epoch, {'emergency': True}, is_latest=True)
+
     def _cosine_lr(self, step: int, total_steps: int) -> float:
         warmup = max(1, int(total_steps * self.config.WARMUP_RATIO))
         if step < warmup:
             return self.config.LEARNING_RATE * step / warmup
         t = (step - warmup) / max(total_steps - warmup, 1)
-        return self.config.LEARNING_RATE * 0.5 * (1.0 + math.cos(math.pi * t))
+        lr = self.config.LEARNING_RATE * 0.5 * (1.0 + math.cos(math.pi * t))
+        if self.phase_lr is not None and self.model.phase_tracker is not None:
+            if self.model.phase_tracker.history:
+                last_kappa = self.model.phase_tracker.history[-1].get('kappa', 1.0)
+                scale = self.phase_lr.get_lr_scale(last_kappa)
+                if abs(scale - 1.0) > 0.01:
+                    self.logger.info("Phase-aware LR: kappa=%.2f scale=%.4f", last_kappa, scale)
+                lr *= scale
+        return lr
 
     def train_epoch(
         self,
@@ -2106,13 +2186,25 @@ class VJEPAQTrainer:
                 self.global_step += 1
                 accum_loss = 0.0
 
+                if self.swa is not None:
+                    self.swa.step(self.model, self.global_step)
+
                 if self.global_step % 10 == 0:
-                    self.logger.info(
+                    log_msg = (
                         "Epoch %d Step %d: Loss=%.4f Cosine=%.4f Aux=%.4f",
                         epoch, self.global_step,
                         outputs['loss'].item(), outputs['cosine_loss'].item(),
                         outputs['aux_loss'].item(),
                     )
+                    self.logger.info(*log_msg)
+                    if self.wandb is not None:
+                        self.wandb.log({
+                            'loss': outputs['loss'].item(),
+                            'cosine_loss': outputs['cosine_loss'].item(),
+                            'aux_loss': outputs['aux_loss'].item(),
+                            'lr': lr,
+                            'step': self.global_step,
+                        })
 
                 if (self.config.TRACK_PHASE
                         and self.global_step % self.config.GRASS_TRACK_EVERY == 0):
@@ -2120,6 +2212,8 @@ class VJEPAQTrainer:
                     if snap:
                         self.logger.info(
                             "Phase: %s", self.model.phase_tracker.format_log(snap))
+                        if self.wandb is not None:
+                            self.wandb.log(snap, step=self.global_step)
 
                 if self.global_step % self.config.SAVE_EVERY_STEPS == 0:
                     elapsed = time.time() - self.last_save_time
@@ -2189,24 +2283,31 @@ class VJEPAQTrainer:
 # ============================================================================
 
 SCALE_PRESETS: Dict[str, Dict[str, Any]] = {
+    'tiny': dict(
+        D_MODEL=192, N_HEADS=4, N_ENCODER_LAYERS=6, N_PREDICTOR_LAYERS=6,
+        NUM_FRAMES=8, IMAGE_SIZE=(64, 64), PATCH_SIZE=(16, 16),
+        CONTEXT_FRAMES=4, PREDICT_FRAMES=4,
+        DROPOUT=0.0, GRADIENT_CHECKPOINTING=False,
+        USE_AMP=False, TRACK_PHASE=False, BATCH_SIZE=16, GRAD_ACCUM_STEPS=1,
+    ),
     'micro': dict(
         D_MODEL=128, N_HEADS=4, N_ENCODER_LAYERS=4, N_PREDICTOR_LAYERS=4,
         NUM_FRAMES=8, IMAGE_SIZE=(64, 64), PATCH_SIZE=(16, 16),
         CONTEXT_FRAMES=4, PREDICT_FRAMES=4,
-        DROPOUT=0.0, MOE_ENABLED=False, GRADIENT_CHECKPOINTING=False,
+        DROPOUT=0.0, GRADIENT_CHECKPOINTING=False,
         USE_AMP=False, TRACK_PHASE=False, BATCH_SIZE=16, GRAD_ACCUM_STEPS=1,
     ),
     'small': dict(
         D_MODEL=384, N_HEADS=6, N_ENCODER_LAYERS=12, N_PREDICTOR_LAYERS=12,
         NUM_FRAMES=16, IMAGE_SIZE=(64, 64), PATCH_SIZE=(16, 16),
         GRADIENT_CHECKPOINTING=True, USE_AMP=True, TRACK_PHASE=False,
-        MOE_ENABLED=False, DROPOUT=0.0, BATCH_SIZE=8, GRAD_ACCUM_STEPS=2,
+        DROPOUT=0.0, BATCH_SIZE=8, GRAD_ACCUM_STEPS=2,
     ),
     'medium': dict(
         D_MODEL=512, N_HEADS=8, N_ENCODER_LAYERS=16, N_PREDICTOR_LAYERS=16,
         NUM_FRAMES=16, IMAGE_SIZE=(64, 64), PATCH_SIZE=(16, 16),
         GRADIENT_CHECKPOINTING=True, USE_AMP=True, TRACK_PHASE=False,
-        MOE_ENABLED=False, DROPOUT=0.0, BATCH_SIZE=4, GRAD_ACCUM_STEPS=4,
+        DROPOUT=0.0, BATCH_SIZE=4, GRAD_ACCUM_STEPS=4,
     ),
 }
 

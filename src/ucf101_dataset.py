@@ -21,9 +21,10 @@ import subprocess
 import urllib.error
 import urllib.request
 import zipfile
+from collections import OrderedDict
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List, Tuple
+from typing import Callable, List, Tuple
 
 import torch
 import torch.nn.functional as F
@@ -57,6 +58,45 @@ def _detect_video_backend() -> str:
 _VIDEO_BACKEND = _detect_video_backend()
 
 
+class LRUVideoCache:
+    """LRU cache for decoded video tensors with disk backing.
+
+    On cache miss: checks disk for pre-decoded .pt file.
+    If found, loads into RAM. If not, calls decode_fn, saves to disk and RAM.
+    Shared across workers via disk cache; each worker maintains its own RAM LRU.
+    """
+
+    def __init__(self, cache_dir: str, capacity: int = 500) -> None:
+        self._cache_dir = Path(cache_dir)
+        self._cache_dir.mkdir(parents=True, exist_ok=True)
+        self._capacity = capacity
+        self._ram: OrderedDict[str, torch.Tensor] = OrderedDict()
+
+    def _cache_path(self, video_path: str) -> Path:
+        safe = video_path.replace('/', '_').replace('.', '_')
+        return self._cache_dir / f'{safe}.pt'
+
+    def get_or_decode(
+        self, video_path: str, decode_fn: Callable[[], torch.Tensor]
+    ) -> torch.Tensor:
+        if video_path in self._ram:
+            self._ram.move_to_end(video_path)
+            return self._ram[video_path]
+
+        cache_file = self._cache_path(video_path)
+        if cache_file.exists():
+            tensor = torch.load(cache_file, mmap=True, weights_only=True)
+        else:
+            tensor = decode_fn()
+            torch.save(tensor, cache_file)
+
+        self._ram[video_path] = tensor
+        if len(self._ram) > self._capacity:
+            self._ram.popitem(last=False)
+
+        return tensor
+
+
 class VideoBackendError(RuntimeError):
     """Raised when no video decoding backend is available."""
 
@@ -83,6 +123,8 @@ class UCF101Config:
     num_workers: int = 4
     batch_size: int = 16
     shuffle: bool = True
+    cache_dir: str = ''
+    cache_capacity: int = 2000
 
     def __post_init__(self) -> None:
         assert self.frames_per_clip > 0, 'frames_per_clip must be positive'
@@ -134,6 +176,8 @@ class UCF101Dataset(Dataset):
         self._samples: List[Tuple[str, int]] = []
         self._num_classes: int = 0
         self._parse_split()
+        cache_dir = config.cache_dir or str(self._root / 'cache')
+        self._cache = LRUVideoCache(cache_dir, config.cache_capacity)
 
     @property
     def num_classes(self) -> int:
@@ -258,7 +302,7 @@ class UCF101Dataset(Dataset):
     def __getitem__(self, index: int) -> torch.Tensor:
         video_path, _ = self._samples[index]
         try:
-            frames = self._read_video(video_path)
+            frames = self._cache.get_or_decode(video_path, lambda: self._read_video_raw(video_path))
         except Exception as exc:
             logger.warning('Failed to read video %s: %s', video_path, exc)
             return self._make_dummy()
@@ -272,7 +316,7 @@ class UCF101Dataset(Dataset):
         frames = frames.contiguous()
         return frames
 
-    def _read_video(self, path: str) -> torch.Tensor:
+    def _read_video_raw(self, path: str) -> torch.Tensor:
         if _VIDEO_BACKEND == 'torchcodec':
             from torchcodec.decoders import SimpleVideoDecoder as VideoDecoder
             decoder = VideoDecoder(path, dimension_order='NCHW')

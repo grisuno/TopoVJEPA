@@ -163,3 +163,7 @@ UCF101 dataset has its own `UCF101Config` dataclass (src/ucf101_dataset.py:60).
 ## License
 
 AGPL v3. Gris Iscomeback.
+
+## DOI
+
+[https://doi.org/10.5281/zenodo.21854994](https://doi.org/10.5281/zenodo.21854994)

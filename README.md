@@ -167,3 +167,10 @@ AGPL v3. Gris Iscomeback.
 ## DOI
 
 [https://doi.org/10.5281/zenodo.21854994](https://doi.org/10.5281/zenodo.21854994)
+
+
+---
+### Topo Journey
+If you are interested in this project, explore the architecture evolution:
+- [TopoGPT2](https://github.com/grisuno/TopoGPT2): Base embedding architecture.
+- [TopoGPT3](https://github.com/grisuno/TopoGPT3): Model evolution.

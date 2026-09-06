@@ -1,0 +1,44 @@
+# Subsystem: misc
+
+## tests/test_ucf101_dataset.py
+- Layer: testing
+- Language: py
+- Symbols:
+  - `_make_test_video` (function, line 29) `def _make_test_video(path, num_frames, height, width, seed)`
+  - `_make_annotation_files` (function, line 48) `def _make_annotation_files(annotation_dir, split, split_index, entries)`
+  - `TestUCF101Config` (class, line 69) `class TestUCF101Config(TestCase)`
+  - `TestUCF101DatasetInit` (class, line 137) `class TestUCF101DatasetInit(TestCase)`
+  - `TestUCF101DatasetGetItem` (class, line 210) `class TestUCF101DatasetGetItem(TestCase)`
+  - `TestUCF101DatasetErrors` (class, line 363) `class TestUCF101DatasetErrors(TestCase)`
+  - `TestUCF101Dataloader` (class, line 398) `class TestUCF101Dataloader(TestCase)`
+  - `test_default_config_is_valid` (method, line 72) `def test_default_config_is_valid(self)`
+  - `test_valid_config_accepts_all_fields` (method, line 81) `def test_valid_config_accepts_all_fields(self)`
+  - `test_zero_frames_per_clip_raises` (method, line 102) `def test_zero_frames_per_clip_raises(self)`
+  - `test_negative_output_size_raises` (method, line 107) `def test_negative_output_size_raises(self)`
+  - `test_invalid_split_raises` (method, line 114) `def test_invalid_split_raises(self)`
+  - `test_invalid_split_index_raises` (method, line 119) `def test_invalid_split_index_raises(self)`
+  - `test_negative_num_workers_raises` (method, line 126) `def test_negative_num_workers_raises(self)`
+  - `test_zero_batch_size_raises` (method, line 131) `def test_zero_batch_size_raises(self)`
+  - `setUp` (method, line 140) `def setUp(self)`
+  - `tearDown` (method, line 148) `def tearDown(self)`
+  - `test_missing_annotation_file_raises` (method, line 151) `def test_missing_annotation_file_raises(self)`
+  - `test_empty_annotation_raises_runtime_error` (method, line 162) `def test_empty_annotation_raises_runtime_error(self)`
+  - `test_loads_samples_with_valid_annotations` (method, line 174) `def test_loads_samples_with_valid_annotations(self)`
+  - `test_num_classes_matches_annotation` (method, line 190) `def test_num_classes_matches_annotation(self)`
+  - `setUp` (method, line 213) `def setUp(self)`
+  - `tearDown` (method, line 234) `def tearDown(self)`
+  - `test_output_shape_with_resize` (method, line 237) `def test_output_shape_with_resize(self)`
+  - `test_output_shape_without_resize` (method, line 253) `def test_output_shape_without_resize(self)`
+  - `test_pixel_range` (method, line 271) `def test_pixel_range(self)`
+  - `test_dtype_is_float32` (method, line 287) `def test_dtype_is_float32(self)`
+  - `test_different_indices_return_different_tensors` (method, line 300) `def test_different_indices_return_different_tensors(self)`
+  - `test_short_video_gets_padded` (method, line 314) `def test_short_video_gets_padded(self)`
+  - `test_deterministic_output_for_same_index` (method, line 347) `def test_deterministic_output_for_same_index(self)`
+  - `setUp` (method, line 366) `def setUp(self)`
+  - `tearDown` (method, line 374) `def tearDown(self)`
+  - `test_missing_video_file_returns_dummy` (method, line 377) `def test_missing_video_file_returns_dummy(self)`
+  - `setUp` (method, line 401) `def setUp(self)`
+  - `tearDown` (method, line 424) `def tearDown(self)`
+  - `test_dataloader_returns_batched_tensors` (method, line 427) `def test_dataloader_returns_batched_tensors(self)`
+  - `test_dataloader_works_with_trainer_pattern` (method, line 450) `def test_dataloader_works_with_trainer_pattern(self)`
+- Depends on: `src/ucf101_dataset.py`

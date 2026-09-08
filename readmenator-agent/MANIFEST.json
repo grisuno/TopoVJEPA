@@ -1,0 +1,22 @@
+{
+  "tool": "readmenator",
+  "generated_at": "2026-09-08T17:10:56Z",
+  "project_root": "/tmp/push_TopoVJEPA_20260908_131917",
+  "files": 7,
+  "symbols": 275,
+  "imports": 1830,
+  "resolved_imports": 25,
+  "security_findings": 0,
+  "languages": {
+    "py": 6,
+    "sh": 1
+  },
+  "entrypoints": [],
+  "start_here": "INDEX.md",
+  "workflow": [
+    "grep -n '<keyword>' INDEX.md",
+    "cat KB_<subsystem>.md",
+    "grep -n '<file>' ARCHITECTURE.md SYMBOLS.md"
+  ],
+  "regenerate": "readmenator . --rebuild"
+}

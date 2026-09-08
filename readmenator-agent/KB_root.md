@@ -1,0 +1,218 @@
+# Subsystem: root
+
+## app.py
+- Layer: utility
+- Doc: _*_ coding: utf8 _*_
+- Language: py
+- Symbols:
+  - `create_model` (function, line 18) `def create_model(scale)`
+  - `create_dataset` (function, line 24) `def create_dataset(config)`
+  - `create_trainer` (function, line 28) `def create_trainer(config)`
+  - `create_generator` (function, line 32) `def create_generator(config)`
+  - `create_generator_trainer` (function, line 36) `def create_generator_trainer(config)`
+- Depends on: `model.py`
+
+## install.sh
+- Layer: utility
+- Language: sh
+
+## model.py
+- Layer: testing
+- Language: py
+- Symbols:
+  - `VJEPAQConfig` (class, line 50) `class VJEPAQConfig`
+  - `_setup_logger` (method, line 240) `def _setup_logger(name, level)`
+  - `_set_seed` (method, line 251) `def _set_seed(seed, device)`
+  - `_count_parameters` (method, line 258) `def _count_parameters(module)`
+  - `ComplexSpectralLayer` (class, line 267) `class ComplexSpectralLayer(Module)`
+  - `QuaternionSpectralLayer` (class, line 343) `class QuaternionSpectralLayer(Module)`
+  - `SpatiotemporalSpectralAE` (class, line 424) `class SpatiotemporalSpectralAE(Module)`
+  - `VideoPatchEmbedding` (class, line 474) `class VideoPatchEmbedding(Module)`
+  - `VJEPAMasker` (class, line 550) `class VJEPAMasker`
+  - `RotaryEmbedding` (class, line 609) `class RotaryEmbedding(Module)`
+  - `RMSNorm` (class, line 641) `class RMSNorm(Module)`
+  - `SpatiotemporalAttention` (class, line 659) `class SpatiotemporalAttention(Module)`
+  - `QuaternionTorusBrain` (class, line 721) `class QuaternionTorusBrain(Module)`
+  - `TopoMoE` (class, line 904) `class TopoMoE(Module)`
+  - `VJEPAQBlock` (class, line 977) `class VJEPAQBlock(Module)`
+  - `VJEPAQEncoder` (class, line 1015) `class VJEPAQEncoder(Module)`
+  - `VJEPAQPredictor` (class, line 1063) `class VJEPAQPredictor(Module)`
+  - `PhaseDiagramTracker` (class, line 1131) `class PhaseDiagramTracker`
+  - `VJEPAQ` (class, line 1334) `class VJEPAQ(Module)`
+  - `VJEPAQDecoder` (class, line 1427) `class VJEPAQDecoder(Module)`
+  - `VJEPAQVideoGenerator` (class, line 1528) `class VJEPAQVideoGenerator(Module)`
+  - `VJEPAQGeneratorTrainer` (class, line 1618) `class VJEPAQGeneratorTrainer`
+  - `MovingShapesDataset` (class, line 1780) `class MovingShapesDataset(Dataset)`
+  - `VideoDataset` (class, line 1898) `class VideoDataset(Dataset)`
+  - `SWACallback` (class, line 1941) `class SWACallback`
+  - `PhaseAwareLRCallback` (class, line 1985) `class PhaseAwareLRCallback`
+  - `PreemptionHandler` (class, line 2003) `class PreemptionHandler`
+  - `WandBAdapter` (class, line 2023) `class WandBAdapter`
+  - `VJEPAQTrainer` (class, line 2059) `class VJEPAQTrainer`
+  - `TestVJEPAQDecoder` (class, line 2320) `class TestVJEPAQDecoder(TestCase)`
+  - `TestVJEPAQVideoGenerator` (class, line 2359) `class TestVJEPAQVideoGenerator(TestCase)`
+  - `TestGeneratorTrainerIntegration` (class, line 2397) `class TestGeneratorTrainerIntegration(TestCase)`
+  - `TestQuaternionOps` (class, line 2444) `class TestQuaternionOps(TestCase)`
+  - `TestQuaternionLinear` (class, line 2500) `class TestQuaternionLinear(TestCase)`
+  - `TestVideoPatchEmbedding` (class, line 2518) `class TestVideoPatchEmbedding(TestCase)`
+  - `TestVJEPAMasker` (class, line 2546) `class TestVJEPAMasker(TestCase)`
+  - `TestVJEPAQModel` (class, line 2567) `class TestVJEPAQModel(TestCase)`
+  - `TestMovingShapesDataset` (class, line 2655) `class TestMovingShapesDataset(TestCase)`
+  - `TestTrainerIntegration` (class, line 2690) `class TestTrainerIntegration(TestCase)`
+  - `TestConfigValidation` (class, line 2731) `class TestConfigValidation(TestCase)`
+  - `_visualize_video` (method, line 2756) `def _visualize_video(input_path, output_path)`
+  - `_create_dataloader` (method, line 2825) `def _create_dataloader(config)`
+  - `main` (method, line 2856) `def main()`
+  - `__post_init__` (method, line 142) `def __post_init__(self)`
+  - `to_dict` (method, line 184) `def to_dict(self)`
+  - `to_json` (method, line 188) `def to_json(self)`
+  - `from_json` (method, line 196) `def from_json(cls, path_or_str)`
+  - `auto_batch_size` (method, line 211) `def auto_batch_size(config, min_batch, max_batch)`
+  - `__init__` (method, line 275) `def __init__(self, channels, grid_h, grid_w, imaginary_ratio, init_scale)`
+  - `set_imaginary_ratio` (method, line 299) `def set_imaginary_ratio(self, ratio)`
+  - `get_effective_imaginary_ratio` (method, line 306) `def get_effective_imaginary_ratio(self)`
+  - `get_spectral_operator` (method, line 315) `def get_spectral_operator(self)`
+  - `forward` (method, line 322) `def forward(self, x)`
+  - `__init__` (method, line 351) `def __init__(self, in_q, out_q, grid_h, grid_w, init_scale)`
+  - `_kernel` (method, line 378) `def _kernel(self, c)`
+  - `_gauss_contract` (method, line 382) `def _gauss_contract(W, X)`
+  - `forward` (method, line 390) `def forward(self, x)`
+  - `__init__` (method, line 427) `def __init__(self, config)`
+  - `_temporal_filter` (method, line 448) `def _temporal_filter(self, x, kr, ki)`
+  - `encode_temporal` (method, line 454) `def encode_temporal(self, x)`
+  - `decode_temporal` (method, line 458) `def decode_temporal(self, z)`
+  - `forward` (method, line 462) `def forward(self, x)`
+  - `__init__` (method, line 481) `def __init__(self, config)`
+  - `_compute_temporal_derivative` (method, line 499) `def _compute_temporal_derivative(video)`
+  - `forward` (method, line 504) `def forward(self, video)`
+  - `__init__` (method, line 553) `def __init__(self, config)`
+  - `_generate_block_mask` (method, line 558) `def _generate_block_mask(h, w, mask_ratio, block_size, device)`
+  - `generate_masks` (method, line 572) `def generate_masks(self, batch_size, device)`
+  - `__init__` (method, line 612) `def __init__(self, d_head, max_seq_len, base)`
+  - `_build_cache` (method, line 618) `def _build_cache(self, seq_len)`
+  - `_rotate_half` (method, line 625) `def _rotate_half(self, x)`
+  - `forward` (method, line 629) `def forward(self, q, k)`
+  - `__init__` (method, line 644) `def __init__(self, d_model, eps)`
+  - `forward` (method, line 649) `def forward(self, x)`
+  - `__init__` (method, line 662) `def __init__(self, d_model, n_heads, config)`
+  - `forward` (method, line 678) `def forward(self, x, mask, is_causal)`
+  - `__init__` (method, line 737) `def __init__(self, d_model, config)`
+  - `_build_torus_graph` (method, line 783) `def _build_torus_graph(self)`
+  - `_torus_soft_assign` (method, line 812) `def _torus_soft_assign(self, phi1, phi2)`
+  - `_message_passing` (method, line 827) `def _message_passing(self, node_feat)`
+  - `forward` (method, line 859) `def forward(self, x)`
+  - `__init__` (method, line 907) `def __init__(self, d_model, config)`
+  - `_route` (method, line 927) `def _route(self, x)`
+  - `forward` (method, line 954) `def forward(self, x)`
+  - `__init__` (method, line 980) `def __init__(self, d_model, n_heads, config)`
+  - `_forward_impl` (method, line 989) `def _forward_impl(self, x, mask)`
+  - `forward` (method, line 1000) `def forward(self, x, mask)`
+  - `__init__` (method, line 1018) `def __init__(self, config)`
+  - `forward` (method, line 1029) `def forward(self, video, mask)`
+  - `__init__` (method, line 1066) `def __init__(self, config)`
+  - `forward` (method, line 1085) `def forward(self, encoder_output, encoder_mask, predictor_mask)`
+  - `__init__` (method, line 1137) `def __init__(self, config)`
+  - `compute_delta` (method, line 1146) `def compute_delta(self, model)`
+  - `compute_kappa` (method, line 1154) `def compute_kappa(self, model, gradient_buffer, max_dim)`
+  - `compute_t_eff` (method, line 1172) `def compute_t_eff(self, gradient_buffer, lr)`
+  - `compute_alpha` (method, line 1182) `def compute_alpha(delta)`
+  - `compute_berry_phase` (method, line 1187) `def compute_berry_phase(self, model)`
+  - `_stack_spectral_kernels` (method, line 1223) `def _stack_spectral_kernels(self, model)`
+  - `compute_goe_gue_stats` (method, line 1248) `def compute_goe_gue_stats(self, model)`
+  - `snapshot` (method, line 1292) `def snapshot(self, model, step, gradient_buffer, lr)`
+  - `format_log` (method, line 1321) `def format_log(snap)`
+  - `__init__` (method, line 1337) `def __init__(self, config)`
+  - `from_preset` (method, line 1355) `def from_preset(cls, scale)`
+  - `forward` (method, line 1360) `def forward(self, video)`
+  - `get_phase_snapshot` (method, line 1416) `def get_phase_snapshot(self, step, lr)`
+  - `__init__` (method, line 1437) `def __init__(self, config)`
+  - `_apply_spatial_stack` (method, line 1466) `def _apply_spatial_stack(self, feat)`
+  - `forward` (method, line 1473) `def forward(self, tokens, frame_offsets)`
+  - `__init__` (method, line 1541) `def __init__(self, config)`
+  - `_freeze_backbone` (method, line 1551) `def _freeze_backbone(self)`
+  - `_make_gen_masks` (method, line 1557) `def _make_gen_masks(self, batch_size, device)`
+  - `forward` (method, line 1574) `def forward(self, video)`
+  - `__init__` (method, line 1625) `def __init__(self, config)`
+  - `_temporal_gradient_loss` (method, line 1658) `def _temporal_gradient_loss(self, generated, target)`
+  - `train_epoch` (method, line 1664) `def train_epoch(self, dataloader, epoch)`
+  - `save_checkpoint` (method, line 1750) `def save_checkpoint(self, epoch, metrics)`
+  - `load_checkpoint` (method, line 1766) `def load_checkpoint(self, path)`
+  - `__init__` (method, line 1790) `def __init__(self, config)`
+  - `__len__` (method, line 1801) `def __len__(self)`
+  - `_init_objects` (method, line 1804) `def _init_objects(self, rng)`
+  - `_render_frame` (method, line 1826) `def _render_frame(self, objects, grid_x, grid_y)`
+  - `_update_physics` (method, line 1851) `def _update_physics(self, objects)`
+  - `__getitem__` (method, line 1869) `def __getitem__(self, idx)`
+  - `__init__` (method, line 1901) `def __init__(self, video_dir, config)`
+  - `__len__` (method, line 1924) `def __len__(self)`
+  - `__getitem__` (method, line 1927) `def __getitem__(self, idx)`
+  - `__init__` (method, line 1948) `def __init__(self, model, decay, start_step)`
+  - `step` (method, line 1958) `def step(self, model, global_step)`
+  - `swap_swa` (method, line 1969) `def swap_swa(self, model)`
+  - `restore` (method, line 1978) `def restore(self, model, saved)`
+  - `__init__` (method, line 1993) `def __init__(self, kappa_threshold, max_kappa)`
+  - `get_lr_scale` (method, line 1997) `def get_lr_scale(self, kappa)`
+  - `__init__` (method, line 2006) `def __init__(self)`
+  - `arm` (method, line 2010) `def arm(self, checkpoint_fn)`
+  - `disarm` (method, line 2014) `def disarm(self)`
+  - `_handler` (method, line 2017) `def _handler(self, signum, frame)`
+  - `__init__` (method, line 2031) `def __init__(self, project, config, enabled)`
+  - `log` (method, line 2043) `def log(self, data, step)`
+  - `finish` (method, line 2048) `def finish(self)`
+  - `__init__` (method, line 2069) `def __init__(self, config, swa, phase_lr, preempt, wandb)`
+  - `_emergency_save` (method, line 2121) `def _emergency_save(self)`
+  - `_cosine_lr` (method, line 2125) `def _cosine_lr(self, step, total_steps)`
+  - `train_epoch` (method, line 2140) `def train_epoch(self, dataloader, epoch, total_steps)`
+  - `save_checkpoint` (method, line 2244) `def save_checkpoint(self, epoch, metrics, is_latest)`
+  - `load_checkpoint` (method, line 2263) `def load_checkpoint(self, path)`
+  - `setUp` (method, line 2323) `def setUp(self)`
+  - `test_decoder_output_shape` (method, line 2332) `def test_decoder_output_shape(self)`
+  - `test_decoder_pixel_range` (method, line 2340) `def test_decoder_pixel_range(self)`
+  - `test_decoder_gradient_flows` (method, line 2348) `def test_decoder_gradient_flows(self)`
+  - `setUp` (method, line 2362) `def setUp(self)`
+  - `test_generator_output_shape` (method, line 2376) `def test_generator_output_shape(self)`
+  - `test_generator_backbone_frozen` (method, line 2388) `def test_generator_backbone_frozen(self)`
+  - `setUp` (method, line 2400) `def setUp(self)`
+  - `test_train_one_step` (method, line 2423) `def test_train_one_step(self)`
+  - `test_decoder_parameters_update` (method, line 2433) `def test_decoder_parameters_update(self)`
+  - `setUp` (method, line 2447) `def setUp(self)`
+  - `test_hamilton_product_identity` (method, line 2451) `def test_hamilton_product_identity(self)`
+  - `test_hamilton_product_ij_equals_k` (method, line 2455) `def test_hamilton_product_ij_equals_k(self)`
+  - `test_normalize_unit` (method, line 2462) `def test_normalize_unit(self)`
+  - `test_conjugate_product_identity` (method, line 2467) `def test_conjugate_product_identity(self)`
+  - `test_rotate_vector_norm_preserving` (method, line 2474) `def test_rotate_vector_norm_preserving(self)`
+  - `test_log_exp_roundtrip` (method, line 2482) `def test_log_exp_roundtrip(self)`
+  - `test_lie_product_approximation` (method, line 2489) `def test_lie_product_approximation(self)`
+  - `test_output_divisible_by_4` (method, line 2503) `def test_output_divisible_by_4(self)`
+  - `test_gradient_flows` (method, line 2509) `def test_gradient_flows(self)`
+  - `setUp` (method, line 2521) `def setUp(self)`
+  - `test_forward_shape_matches_config` (method, line 2527) `def test_forward_shape_matches_config(self)`
+  - `test_temporal_derivative_handles_single_frame` (method, line 2537) `def test_temporal_derivative_handles_single_frame(self)`
+  - `setUp` (method, line 2549) `def setUp(self)`
+  - `test_mask_shapes` (method, line 2552) `def test_mask_shapes(self)`
+  - `test_predictor_mask_subset_of_encoder_mask` (method, line 2559) `def test_predictor_mask_subset_of_encoder_mask(self)`
+  - `setUp` (method, line 2570) `def setUp(self)`
+  - `test_forward_loss_scalar` (method, line 2577) `def test_forward_loss_scalar(self)`
+  - `test_encoder_output_shape` (method, line 2587) `def test_encoder_output_shape(self)`
+  - `test_predictor_output_shape` (method, line 2598) `def test_predictor_output_shape(self)`
+  - `test_torus_brain_forward` (method, line 2611) `def test_torus_brain_forward(self)`
+  - `test_quaternion_spectral_layer_forward` (method, line 2619) `def test_quaternion_spectral_layer_forward(self)`
+  - `test_complex_spectral_layer_forward` (method, line 2627) `def test_complex_spectral_layer_forward(self)`
+  - `test_moe_forward` (method, line 2633) `def test_moe_forward(self)`
+  - `test_attention_forward` (method, line 2640) `def test_attention_forward(self)`
+  - `test_block_forward` (method, line 2647) `def test_block_forward(self)`
+  - `setUp` (method, line 2658) `def setUp(self)`
+  - `test_output_shape` (method, line 2665) `def test_output_shape(self)`
+  - `test_pixel_range` (method, line 2671) `def test_pixel_range(self)`
+  - `test_deterministic` (method, line 2677) `def test_deterministic(self)`
+  - `test_different_indices_differ` (method, line 2683) `def test_different_indices_differ(self)`
+  - `setUp` (method, line 2693) `def setUp(self)`
+  - `test_train_one_step` (method, line 2711) `def test_train_one_step(self)`
+  - `test_train_multiple_steps` (method, line 2721) `def test_train_multiple_steps(self)`
+  - `test_bad_d_model_raises` (method, line 2734) `def test_bad_d_model_raises(self)`
+  - `test_bad_mask_ratio_raises` (method, line 2738) `def test_bad_mask_ratio_raises(self)`
+  - `test_bad_data_mode_raises` (method, line 2742) `def test_bad_data_mode_raises(self)`
+  - `test_micro_config_valid` (method, line 2746) `def test_micro_config_valid(self)`
+  - `to_frames` (method, line 2782) `def to_frames(t)`
+- Depends on: `src/quaternion_ops.py`, `src/ucf101_dataset.py`
+- Imported by: `app.py`

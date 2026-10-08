@@ -1,0 +1,120 @@
+# Concepts
+
+Nouns map atomically to file sets (EXTRACTED); verbs aggregate structural edges (INFERRED).
+
+- `dataset` | files=4 | mentions=25 | `app.py`, `model.py`, `src/ucf101_dataset.py`, `tests/test_ucf101_dataset.py`
+- `config` | files=4 | mentions=18 | `app.py`, `model.py`, `src/ucf101_dataset.py`, `tests/test_ucf101_dataset.py`
+- `create` | files=4 | mentions=17 | `app.py`, `model.py`, `src/ucf101_dataset.py`, `tests/test_ucf101_dataset.py`
+- `output` | files=4 | mentions=14 | `model.py`, `src/quaternion_ops.py`, `src/ucf101_dataset.py`, `tests/test_ucf101_dataset.py`
+- `trainer` | files=4 | mentions=14 | `app.py`, `model.py`, `src/ucf101_dataset.py`, `tests/test_ucf101_dataset.py`
+- `tensors` | files=4 | mentions=8 | `model.py`, `src/quaternion_ops.py`, `src/ucf101_dataset.py`, `tests/test_ucf101_dataset.py`
+- `loader` | files=4 | mentions=5 | `app.py`, `model.py`, `src/ucf101_dataset.py`, `tests/test_ucf101_dataset.py`
+- `video` | files=3 | mentions=36 | `model.py`, `src/ucf101_dataset.py`, `tests/test_ucf101_dataset.py`
+- `model` | files=3 | mentions=17 | `app.py`, `model.py`, `src/ucf101_dataset.py`
+- `via` | files=3 | mentions=11 | `model.py`, `src/quaternion_ops.py`, `src/ucf101_dataset.py`
+- `shape` | files=3 | mentions=9 | `model.py`, `src/ucf101_dataset.py`, `tests/test_ucf101_dataset.py`
+- `frames` | files=3 | mentions=8 | `model.py`, `src/ucf101_dataset.py`, `tests/test_ucf101_dataset.py`
+- `train` | files=3 | mentions=8 | `app.py`, `model.py`, `src/ucf101_dataset.py`
+- `error` | files=3 | mentions=7 | `model.py`, `src/ucf101_dataset.py`, `tests/test_ucf101_dataset.py`
+- `must` | files=3 | mentions=7 | `model.py`, `src/quaternion_ops.py`, `src/ucf101_dataset.py`
+- `data` | files=3 | mentions=6 | `model.py`, `src/ucf101_dataset.py`, `tests/test_ucf101_dataset.py`
+- `dataloader` | files=3 | mentions=6 | `model.py`, `src/ucf101_dataset.py`, `tests/test_ucf101_dataset.py`
+- `files` | files=3 | mentions=6 | `model.py`, `src/ucf101_dataset.py`, `tests/test_ucf101_dataset.py`
+- `get` | files=3 | mentions=6 | `model.py`, `src/ucf101_dataset.py`, `tests/test_ucf101_dataset.py`
+- `getitem` | files=3 | mentions=5 | `model.py`, `src/ucf101_dataset.py`, `tests/test_ucf101_dataset.py`
+- `size` | files=3 | mentions=5 | `model.py`, `src/ucf101_dataset.py`, `tests/test_ucf101_dataset.py`
+- `when` | files=3 | mentions=5 | `model.py`, `src/ucf101_dataset.py`, `tests/test_ucf101_dataset.py`
+- `all` | files=3 | mentions=4 | `model.py`, `src/quaternion_ops.py`, `tests/test_ucf101_dataset.py`
+- `make` | files=3 | mentions=4 | `model.py`, `src/ucf101_dataset.py`, `tests/test_ucf101_dataset.py`
+- `topo` | files=3 | mentions=4 | `app.py`, `model.py`, `src/ucf101_dataset.py`
+- `back` | files=3 | mentions=3 | `model.py`, `src/quaternion_ops.py`, `src/ucf101_dataset.py`
+- `normalize` | files=3 | mentions=3 | `model.py`, `src/quaternion_ops.py`, `src/ucf101_dataset.py`
+- `then` | files=3 | mentions=3 | `model.py`, `src/ucf101_dataset.py`, `tests/test_ucf101_dataset.py`
+- `uses` | files=3 | mentions=3 | `model.py`, `src/quaternion_ops.py`, `src/ucf101_dataset.py`
+- `using` | files=3 | mentions=3 | `model.py`, `src/quaternion_ops.py`, `src/ucf101_dataset.py`
+- `quaternion` | files=2 | mentions=34 | `model.py`, `src/quaternion_ops.py`
+- `forward` | files=2 | mentions=26 | `model.py`, `src/quaternion_ops.py`
+- `ucf101` | files=2 | mentions=24 | `src/ucf101_dataset.py`, `tests/test_ucf101_dataset.py`
+- `log` | files=2 | mentions=18 | `model.py`, `src/quaternion_ops.py`
+- `product` | files=2 | mentions=16 | `model.py`, `src/quaternion_ops.py`
+- `behaviour` | files=2 | mentions=15 | `model.py`, `tests/test_ucf101_dataset.py`
+- `set` | files=2 | mentions=15 | `model.py`, `tests/test_ucf101_dataset.py`
+- `temporal` | files=2 | mentions=14 | `model.py`, `src/ucf101_dataset.py`
+- `exp` | files=2 | mentions=12 | `model.py`, `src/quaternion_ops.py`
+- `lie` | files=2 | mentions=12 | `model.py`, `src/quaternion_ops.py`
+- `raises` | files=2 | mentions=11 | `model.py`, `tests/test_ucf101_dataset.py`
+- `space` | files=2 | mentions=11 | `model.py`, `src/quaternion_ops.py`
+- `generator` | files=2 | mentions=10 | `app.py`, `model.py`
+- `hamilton` | files=2 | mentions=10 | `model.py`, `src/quaternion_ops.py`
+- `algebra` | files=2 | mentions=9 | `model.py`, `src/quaternion_ops.py`
+- `converts` | files=2 | mentions=9 | `model.py`, `src/quaternion_ops.py`
+- `decoder` | files=2 | mentions=9 | `model.py`, `src/ucf101_dataset.py`
+- `pixel` | files=2 | mentions=7 | `model.py`, `tests/test_ucf101_dataset.py`
+- `valid` | files=2 | mentions=7 | `model.py`, `tests/test_ucf101_dataset.py`
+- `cache` | files=2 | mentions=6 | `model.py`, `src/ucf101_dataset.py`
+
+## Verb Edges
+
+- `config` --depends_on--> `back` (strength 1.00)
+- `config` --depends_on--> `must` (strength 1.00)
+- `config` --depends_on--> `normalize` (strength 1.00)
+- `config` --depends_on--> `output` (strength 1.00)
+- `config` --depends_on--> `tensors` (strength 1.00)
+- `config` --depends_on--> `uses` (strength 1.00)
+- `config` --depends_on--> `using` (strength 1.00)
+- `config` --depends_on--> `via` (strength 1.00)
+- `create` --depends_on--> `back` (strength 1.00)
+- `create` --depends_on--> `must` (strength 1.00)
+- `create` --depends_on--> `normalize` (strength 1.00)
+- `create` --depends_on--> `output` (strength 1.00)
+- `create` --depends_on--> `tensors` (strength 1.00)
+- `create` --depends_on--> `uses` (strength 1.00)
+- `create` --depends_on--> `using` (strength 1.00)
+- `create` --depends_on--> `via` (strength 1.00)
+- `dataset` --depends_on--> `back` (strength 1.00)
+- `dataset` --depends_on--> `must` (strength 1.00)
+- `dataset` --depends_on--> `normalize` (strength 1.00)
+- `dataset` --depends_on--> `output` (strength 1.00)
+- `dataset` --depends_on--> `tensors` (strength 1.00)
+- `dataset` --depends_on--> `uses` (strength 1.00)
+- `dataset` --depends_on--> `using` (strength 1.00)
+- `dataset` --depends_on--> `via` (strength 1.00)
+- `loader` --depends_on--> `back` (strength 1.00)
+- `loader` --depends_on--> `must` (strength 1.00)
+- `loader` --depends_on--> `normalize` (strength 1.00)
+- `loader` --depends_on--> `output` (strength 1.00)
+- `loader` --depends_on--> `tensors` (strength 1.00)
+- `loader` --depends_on--> `uses` (strength 1.00)
+- `loader` --depends_on--> `using` (strength 1.00)
+- `loader` --depends_on--> `via` (strength 1.00)
+- `trainer` --depends_on--> `back` (strength 1.00)
+- `trainer` --depends_on--> `must` (strength 1.00)
+- `trainer` --depends_on--> `normalize` (strength 1.00)
+- `trainer` --depends_on--> `output` (strength 1.00)
+- `trainer` --depends_on--> `tensors` (strength 1.00)
+- `trainer` --depends_on--> `uses` (strength 1.00)
+- `trainer` --depends_on--> `using` (strength 1.00)
+- `trainer` --depends_on--> `via` (strength 1.00)
+- `all` --depends_on--> `back` (strength 0.75)
+- `all` --depends_on--> `must` (strength 0.75)
+- `all` --depends_on--> `normalize` (strength 0.75)
+- `all` --depends_on--> `output` (strength 0.75)
+- `all` --depends_on--> `tensors` (strength 0.75)
+- `all` --depends_on--> `uses` (strength 0.75)
+- `all` --depends_on--> `using` (strength 0.75)
+- `all` --depends_on--> `via` (strength 0.75)
+- `behaviour` --depends_on--> `back` (strength 0.75)
+- `behaviour` --depends_on--> `must` (strength 0.75)
+
+## Dialectic
+
+- Thesis: `algebra` centralizes 2 files; Antithesis: `all` pulls 3 files with 2 shared (Jaccard 0.67); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `algebra` centralizes 2 files; Antithesis: `back` pulls 3 files with 2 shared (Jaccard 0.67); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `algebra` centralizes 2 files; Antithesis: `converts` pulls 2 files with 2 shared (Jaccard 1.00); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `algebra` centralizes 2 files; Antithesis: `exp` pulls 2 files with 2 shared (Jaccard 1.00); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `algebra` centralizes 2 files; Antithesis: `forward` pulls 2 files with 2 shared (Jaccard 1.00); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `algebra` centralizes 2 files; Antithesis: `hamilton` pulls 2 files with 2 shared (Jaccard 1.00); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `algebra` centralizes 2 files; Antithesis: `lie` pulls 2 files with 2 shared (Jaccard 1.00); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `algebra` centralizes 2 files; Antithesis: `log` pulls 2 files with 2 shared (Jaccard 1.00); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `algebra` centralizes 2 files; Antithesis: `must` pulls 3 files with 2 shared (Jaccard 0.67); Synthesis: should they merge, split by layer, or keep `bridges` explicit?
+- Thesis: `algebra` centralizes 2 files; Antithesis: `normalize` pulls 3 files with 2 shared (Jaccard 0.67); Synthesis: should they merge, split by layer, or keep `bridges` explicit?

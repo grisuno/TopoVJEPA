@@ -1,0 +1,159 @@
+# API
+
+## app.py
+Depends on: `model.py`
+- `create_model` (function) `app.py:18` `def create_model(scale)`
+- `create_dataset` (function) `app.py:24` `def create_dataset(config)`
+- `create_trainer` (function) `app.py:28` `def create_trainer(config)`
+- `create_generator` (function) `app.py:32` `def create_generator(config)`
+- `create_generator_trainer` (function) `app.py:36` `def create_generator_trainer(config)`
+
+## model.py
+Depends on: `src/quaternion_ops.py`, `src/ucf101_dataset.py`
+Imported by: `app.py`
+- `VJEPAQConfig.to_dict` (method) `model.py:184` `def to_dict(self)`
+- `VJEPAQConfig.to_json` (method) `model.py:188` `def to_json(self)`
+- `VJEPAQConfig.from_json` (method) `model.py:196` `def from_json(cls, path_or_str)`
+- `VJEPAQConfig.auto_batch_size` (method) `model.py:211` `def auto_batch_size(config, min_batch, max_batch)`
+- `ComplexSpectralLayer.__init__` (method) `model.py:275` `def __init__(self, channels, grid_h, grid_w, imaginary_ratio, init_scale)`
+- `ComplexSpectralLayer.set_imaginary_ratio` (method) `model.py:299` `def set_imaginary_ratio(self, ratio)`
+- `ComplexSpectralLayer.get_effective_imaginary_ratio` (method) `model.py:306` `def get_effective_imaginary_ratio(self)`
+- `ComplexSpectralLayer.get_spectral_operator` (method) `model.py:315` `def get_spectral_operator(self)`
+- `ComplexSpectralLayer.forward` (method) `model.py:322` `def forward(self, x)`
+- `QuaternionSpectralLayer.__init__` (method) `model.py:351` `def __init__(self, in_q, out_q, grid_h, grid_w, init_scale)`
+- `QuaternionSpectralLayer.forward` (method) `model.py:390` `def forward(self, x)`
+- `SpatiotemporalSpectralAE.__init__` (method) `model.py:427` `def __init__(self, config)`
+- `SpatiotemporalSpectralAE.encode_temporal` (method) `model.py:454` `def encode_temporal(self, x)`
+- `SpatiotemporalSpectralAE.decode_temporal` (method) `model.py:458` `def decode_temporal(self, z)`
+- `SpatiotemporalSpectralAE.forward` (method) `model.py:462` `def forward(self, x)`
+- `VideoPatchEmbedding.__init__` (method) `model.py:481` `def __init__(self, config)`
+- `VideoPatchEmbedding.forward` (method) `model.py:504` `def forward(self, video)`
+- `VJEPAMasker.__init__` (method) `model.py:553` `def __init__(self, config)`
+- `VJEPAMasker.generate_masks` (method) `model.py:572` `def generate_masks(self, batch_size, device)`
+- `RotaryEmbedding.__init__` (method) `model.py:612` `def __init__(self, d_head, max_seq_len, base)`
+- `RotaryEmbedding.forward` (method) `model.py:629` `def forward(self, q, k)`
+- `RMSNorm.__init__` (method) `model.py:644` `def __init__(self, d_model, eps)`
+- `RMSNorm.forward` (method) `model.py:649` `def forward(self, x)`
+- `SpatiotemporalAttention.__init__` (method) `model.py:662` `def __init__(self, d_model, n_heads, config)`
+- `SpatiotemporalAttention.forward` (method) `model.py:678` `def forward(self, x, mask, is_causal)`
+- `QuaternionTorusBrain.__init__` (method) `model.py:737` `def __init__(self, d_model, config)`
+- `QuaternionTorusBrain.forward` (method) `model.py:859` `def forward(self, x)`
+- `TopoMoE.__init__` (method) `model.py:907` `def __init__(self, d_model, config)`
+- `TopoMoE.forward` (method) `model.py:954` `def forward(self, x)`
+- `VJEPAQBlock.__init__` (method) `model.py:980` `def __init__(self, d_model, n_heads, config)`
+- `VJEPAQBlock.forward` (method) `model.py:1000` `def forward(self, x, mask)`
+- `VJEPAQEncoder.__init__` (method) `model.py:1018` `def __init__(self, config)`
+- `VJEPAQEncoder.forward` (method) `model.py:1029` `def forward(self, video, mask)`
+- `VJEPAQPredictor.__init__` (method) `model.py:1066` `def __init__(self, config)`
+- `VJEPAQPredictor.forward` (method) `model.py:1085` `def forward(self, encoder_output, encoder_mask, predictor_mask)`
+- `PhaseDiagramTracker.__init__` (method) `model.py:1137` `def __init__(self, config)`
+- `PhaseDiagramTracker.compute_delta` (method) `model.py:1146` `def compute_delta(self, model)`
+- `PhaseDiagramTracker.compute_kappa` (method) `model.py:1154` `def compute_kappa(self, model, gradient_buffer, max_dim)`
+- `PhaseDiagramTracker.compute_t_eff` (method) `model.py:1172` `def compute_t_eff(self, gradient_buffer, lr)`
+- `PhaseDiagramTracker.compute_alpha` (method) `model.py:1182` `def compute_alpha(delta)`
+- `PhaseDiagramTracker.compute_berry_phase` (method) `model.py:1187` `def compute_berry_phase(self, model)`
+- `PhaseDiagramTracker.compute_goe_gue_stats` (method) `model.py:1248` `def compute_goe_gue_stats(self, model)`
+- `PhaseDiagramTracker.snapshot` (method) `model.py:1292` `def snapshot(self, model, step, gradient_buffer, lr)`
+- `PhaseDiagramTracker.format_log` (method) `model.py:1321` `def format_log(snap)`
+- `VJEPAQ.__init__` (method) `model.py:1337` `def __init__(self, config)`
+- `VJEPAQ.from_preset` (method) `model.py:1355` `def from_preset(cls, scale)`
+- `VJEPAQ.forward` (method) `model.py:1360` `def forward(self, video)`
+- `VJEPAQ.get_phase_snapshot` (method) `model.py:1416` `def get_phase_snapshot(self, step, lr)`
+- `VJEPAQDecoder.__init__` (method) `model.py:1437` `def __init__(self, config)`
+- `VJEPAQDecoder.forward` (method) `model.py:1473` `def forward(self, tokens, frame_offsets)`
+- `VJEPAQVideoGenerator.__init__` (method) `model.py:1541` `def __init__(self, config)`
+- `VJEPAQVideoGenerator.forward` (method) `model.py:1574` `def forward(self, video)`
+- `VJEPAQGeneratorTrainer.__init__` (method) `model.py:1625` `def __init__(self, config)`
+- `VJEPAQGeneratorTrainer.train_epoch` (method) `model.py:1664` `def train_epoch(self, dataloader, epoch)`
+- `VJEPAQGeneratorTrainer.save_checkpoint` (method) `model.py:1750` `def save_checkpoint(self, epoch, metrics)`
+- `VJEPAQGeneratorTrainer.load_checkpoint` (method) `model.py:1766` `def load_checkpoint(self, path)`
+- `MovingShapesDataset.__init__` (method) `model.py:1790` `def __init__(self, config)`
+- `VideoDataset.__init__` (method) `model.py:1901` `def __init__(self, video_dir, config)`
+- `SWACallback.__init__` (method) `model.py:1948` `def __init__(self, model, decay, start_step)`
+- `SWACallback.step` (method) `model.py:1958` `def step(self, model, global_step)`
+- `SWACallback.swap_swa` (method) `model.py:1969` `def swap_swa(self, model)`
+- `SWACallback.restore` (method) `model.py:1978` `def restore(self, model, saved)`
+- `PhaseAwareLRCallback.__init__` (method) `model.py:1993` `def __init__(self, kappa_threshold, max_kappa)`
+- `PhaseAwareLRCallback.get_lr_scale` (method) `model.py:1997` `def get_lr_scale(self, kappa)`
+- `PreemptionHandler.__init__` (method) `model.py:2006` `def __init__(self)`
+- `PreemptionHandler.arm` (method) `model.py:2010` `def arm(self, checkpoint_fn)`
+- `PreemptionHandler.disarm` (method) `model.py:2014` `def disarm(self)`
+- `WandBAdapter.__init__` (method) `model.py:2031` `def __init__(self, project, config, enabled)`
+- `WandBAdapter.log` (method) `model.py:2043` `def log(self, data, step)`
+- `WandBAdapter.finish` (method) `model.py:2048` `def finish(self)`
+- `VJEPAQTrainer.__init__` (method) `model.py:2069` `def __init__(self, config, swa, phase_lr, preempt, wandb)`
+- `VJEPAQTrainer.train_epoch` (method) `model.py:2140` `def train_epoch(self, dataloader, epoch, total_steps)`
+- `VJEPAQTrainer.save_checkpoint` (method) `model.py:2244` `def save_checkpoint(self, epoch, metrics, is_latest)`
+- `VJEPAQTrainer.load_checkpoint` (method) `model.py:2263` `def load_checkpoint(self, path)`
+- `TestVJEPAQDecoder.setUp` (method) `model.py:2323` `def setUp(self)`
+- `TestVJEPAQDecoder.test_decoder_output_shape` (method) `model.py:2332` `def test_decoder_output_shape(self)`
+- `TestVJEPAQDecoder.test_decoder_pixel_range` (method) `model.py:2340` `def test_decoder_pixel_range(self)`
+- `TestVJEPAQDecoder.test_decoder_gradient_flows` (method) `model.py:2348` `def test_decoder_gradient_flows(self)`
+- `TestVJEPAQVideoGenerator.setUp` (method) `model.py:2362` `def setUp(self)`
+- `TestVJEPAQVideoGenerator.test_generator_output_shape` (method) `model.py:2376` `def test_generator_output_shape(self)`
+- `TestVJEPAQVideoGenerator.test_generator_backbone_frozen` (method) `model.py:2388` `def test_generator_backbone_frozen(self)`
+- `TestGeneratorTrainerIntegration.setUp` (method) `model.py:2400` `def setUp(self)`
+- `TestGeneratorTrainerIntegration.test_train_one_step` (method) `model.py:2423` `def test_train_one_step(self)`
+- `TestGeneratorTrainerIntegration.test_decoder_parameters_update` (method) `model.py:2433` `def test_decoder_parameters_update(self)`
+- `TestQuaternionOps.setUp` (method) `model.py:2447` `def setUp(self)`
+- `TestQuaternionOps.test_hamilton_product_identity` (method) `model.py:2451` `def test_hamilton_product_identity(self)`
+- `TestQuaternionOps.test_hamilton_product_ij_equals_k` (method) `model.py:2455` `def test_hamilton_product_ij_equals_k(self)`
+- `TestQuaternionOps.test_normalize_unit` (method) `model.py:2462` `def test_normalize_unit(self)`
+- `TestQuaternionOps.test_conjugate_product_identity` (method) `model.py:2467` `def test_conjugate_product_identity(self)`
+- `TestQuaternionOps.test_rotate_vector_norm_preserving` (method) `model.py:2474` `def test_rotate_vector_norm_preserving(self)`
+- `TestQuaternionOps.test_log_exp_roundtrip` (method) `model.py:2482` `def test_log_exp_roundtrip(self)`
+- `TestQuaternionOps.test_lie_product_approximation` (method) `model.py:2489` `def test_lie_product_approximation(self)`
+- `TestQuaternionLinear.test_output_divisible_by_4` (method) `model.py:2503` `def test_output_divisible_by_4(self)`
+- `TestQuaternionLinear.test_gradient_flows` (method) `model.py:2509` `def test_gradient_flows(self)`
+- `TestVideoPatchEmbedding.setUp` (method) `model.py:2521` `def setUp(self)`
+- `TestVideoPatchEmbedding.test_forward_shape_matches_config` (method) `model.py:2527` `def test_forward_shape_matches_config(self)`
+- `TestVideoPatchEmbedding.test_temporal_derivative_handles_single_frame` (method) `model.py:2537` `def test_temporal_derivative_handles_single_frame(self)`
+- `TestVJEPAMasker.setUp` (method) `model.py:2549` `def setUp(self)`
+- `TestVJEPAMasker.test_mask_shapes` (method) `model.py:2552` `def test_mask_shapes(self)`
+- `TestVJEPAMasker.test_predictor_mask_subset_of_encoder_mask` (method) `model.py:2559` `def test_predictor_mask_subset_of_encoder_mask(self)`
+- `TestVJEPAQModel.setUp` (method) `model.py:2570` `def setUp(self)`
+- `TestVJEPAQModel.test_forward_loss_scalar` (method) `model.py:2577` `def test_forward_loss_scalar(self)`
+- `TestVJEPAQModel.test_encoder_output_shape` (method) `model.py:2587` `def test_encoder_output_shape(self)`
+- `TestVJEPAQModel.test_predictor_output_shape` (method) `model.py:2598` `def test_predictor_output_shape(self)`
+- `TestVJEPAQModel.test_torus_brain_forward` (method) `model.py:2611` `def test_torus_brain_forward(self)`
+- `TestVJEPAQModel.test_quaternion_spectral_layer_forward` (method) `model.py:2619` `def test_quaternion_spectral_layer_forward(self)`
+- `TestVJEPAQModel.test_complex_spectral_layer_forward` (method) `model.py:2627` `def test_complex_spectral_layer_forward(self)`
+- `TestVJEPAQModel.test_moe_forward` (method) `model.py:2633` `def test_moe_forward(self)`
+- `TestVJEPAQModel.test_attention_forward` (method) `model.py:2640` `def test_attention_forward(self)`
+- `TestVJEPAQModel.test_block_forward` (method) `model.py:2647` `def test_block_forward(self)`
+- `TestMovingShapesDataset.setUp` (method) `model.py:2658` `def setUp(self)`
+- `TestMovingShapesDataset.test_output_shape` (method) `model.py:2665` `def test_output_shape(self)`
+- `TestMovingShapesDataset.test_pixel_range` (method) `model.py:2671` `def test_pixel_range(self)`
+- `TestMovingShapesDataset.test_deterministic` (method) `model.py:2677` `def test_deterministic(self)`
+- `TestMovingShapesDataset.test_different_indices_differ` (method) `model.py:2683` `def test_different_indices_differ(self)`
+- `TestTrainerIntegration.setUp` (method) `model.py:2693` `def setUp(self)`
+- `TestTrainerIntegration.test_train_one_step` (method) `model.py:2711` `def test_train_one_step(self)`
+- `TestTrainerIntegration.test_train_multiple_steps` (method) `model.py:2721` `def test_train_multiple_steps(self)`
+- `TestConfigValidation.test_bad_d_model_raises` (method) `model.py:2734` `def test_bad_d_model_raises(self)`
+- `TestConfigValidation.test_bad_mask_ratio_raises` (method) `model.py:2738` `def test_bad_mask_ratio_raises(self)`
+- `TestConfigValidation.test_bad_data_mode_raises` (method) `model.py:2742` `def test_bad_data_mode_raises(self)`
+- `TestConfigValidation.test_micro_config_valid` (method) `model.py:2746` `def test_micro_config_valid(self)`
+- `TestConfigValidation.to_frames` (method) `model.py:2782` `def to_frames(t)` -- [T, C, H, W] float -> [T, H, W, C] uint8.
+- `TestConfigValidation.main` (method) `model.py:2856` `def main()` -- Entry point: parse args, create config, build dataset, train or generate.
+
+## src/quaternion_ops.py
+Imported by: `model.py`
+- `QuaternionOps.hamilton_product` (method) `src/quaternion_ops.py:31` `def hamilton_product(q1, q2)`
+- `QuaternionOps.normalize` (method) `src/quaternion_ops.py:42` `def normalize(q, eps)`
+- `QuaternionOps.conjugate` (method) `src/quaternion_ops.py:46` `def conjugate(q)`
+- `QuaternionOps.rotate_vector` (method) `src/quaternion_ops.py:50` `def rotate_vector(v, q)`
+- `QuaternionOps.log` (method) `src/quaternion_ops.py:59` `def log(q, eps)` -- Logarithmic map from SU(2) to so(3) (tangent space).
+- `QuaternionOps.exp` (method) `src/quaternion_ops.py:79` `def exp(q, eps)` -- Exponential map from so(3) to SU(2).
+- `QuaternionOps.lie_product` (method) `src/quaternion_ops.py:103` `def lie_product(q1, q2, eps)` -- Approximate quaternion product via Lie algebra addition.
+- `QuaternionLinear.__init__` (method) `src/quaternion_ops.py:122` `def __init__(self, in_features, out_features, bias)`
+- `QuaternionLinear.forward` (method) `src/quaternion_ops.py:137` `def forward(self, x)`
+
+## src/ucf101_dataset.py
+Imported by: `model.py`, `tests/test_ucf101_dataset.py`
+- `LRUVideoCache.__init__` (method) `src/ucf101_dataset.py:69` `def __init__(self, cache_dir, capacity)`
+- `LRUVideoCache.get_or_decode` (method) `src/ucf101_dataset.py:79` `def get_or_decode(self, video_path, decode_fn)`
+- `UCF101Dataset.__init__` (method) `src/ucf101_dataset.py:158` `def __init__(self, config)`
+- `UCF101Dataset.num_classes` (method) `src/ucf101_dataset.py:183` `def num_classes(self)`
+- `UCF101Dataset.num_samples` (method) `src/ucf101_dataset.py:187` `def num_samples(self)`
+- `UCF101Dataset.config` (method) `src/ucf101_dataset.py:191` `def config(self)`
+- `UCF101Dataset.create_ucf101_dataloader` (method) `src/ucf101_dataset.py:433` `def create_ucf101_dataloader(config)` -- Create a DataLoader for the UCF101 dataset.

@@ -165,10 +165,10 @@ Taint analysis traces how dangerous imports propagate through the codebase via t
 
 - `model.py` imports `subprocess` (0 hop to `model.py`) [high]
   Path: model.py
-- `model.py` imports `subprocess` (1 hop to `ucf101_dataset.py`) [high]
-  Path: model.py -> ucf101_dataset.py
 - `model.py` imports `subprocess` (1 hop to `quaternion_ops.py`) [high]
   Path: model.py -> quaternion_ops.py
+- `model.py` imports `subprocess` (1 hop to `ucf101_dataset.py`) [high]
+  Path: model.py -> ucf101_dataset.py
 - `ucf101_dataset.py` imports `subprocess` (0 hop to `ucf101_dataset.py`) [high]
   Path: ucf101_dataset.py
 - `ucf101_dataset.py` imports `urllib.request` (0 hop to `ucf101_dataset.py`) [medium]

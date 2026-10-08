@@ -1,0 +1,1745 @@
+{
+  "concepts": [
+    {
+      "name": "dataset",
+      "files": [
+        "app.py",
+        "model.py",
+        "src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py"
+      ],
+      "mentions": 25,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "config",
+      "files": [
+        "app.py",
+        "model.py",
+        "src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py"
+      ],
+      "mentions": 18,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "create",
+      "files": [
+        "app.py",
+        "model.py",
+        "src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py"
+      ],
+      "mentions": 17,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "output",
+      "files": [
+        "model.py",
+        "src/quaternion_ops.py",
+        "src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py"
+      ],
+      "mentions": 14,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "trainer",
+      "files": [
+        "app.py",
+        "model.py",
+        "src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py"
+      ],
+      "mentions": 14,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "tensors",
+      "files": [
+        "model.py",
+        "src/quaternion_ops.py",
+        "src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py"
+      ],
+      "mentions": 8,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "loader",
+      "files": [
+        "app.py",
+        "model.py",
+        "src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py"
+      ],
+      "mentions": 5,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "video",
+      "files": [
+        "model.py",
+        "src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py"
+      ],
+      "mentions": 36,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "model",
+      "files": [
+        "app.py",
+        "model.py",
+        "src/ucf101_dataset.py"
+      ],
+      "mentions": 17,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "via",
+      "files": [
+        "model.py",
+        "src/quaternion_ops.py",
+        "src/ucf101_dataset.py"
+      ],
+      "mentions": 11,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "shape",
+      "files": [
+        "model.py",
+        "src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py"
+      ],
+      "mentions": 9,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "frames",
+      "files": [
+        "model.py",
+        "src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py"
+      ],
+      "mentions": 8,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "train",
+      "files": [
+        "app.py",
+        "model.py",
+        "src/ucf101_dataset.py"
+      ],
+      "mentions": 8,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "error",
+      "files": [
+        "model.py",
+        "src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py"
+      ],
+      "mentions": 7,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "must",
+      "files": [
+        "model.py",
+        "src/quaternion_ops.py",
+        "src/ucf101_dataset.py"
+      ],
+      "mentions": 7,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "data",
+      "files": [
+        "model.py",
+        "src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py"
+      ],
+      "mentions": 6,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "dataloader",
+      "files": [
+        "model.py",
+        "src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py"
+      ],
+      "mentions": 6,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "files",
+      "files": [
+        "model.py",
+        "src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py"
+      ],
+      "mentions": 6,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "get",
+      "files": [
+        "model.py",
+        "src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py"
+      ],
+      "mentions": 6,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "getitem",
+      "files": [
+        "model.py",
+        "src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py"
+      ],
+      "mentions": 5,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "size",
+      "files": [
+        "model.py",
+        "src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py"
+      ],
+      "mentions": 5,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "when",
+      "files": [
+        "model.py",
+        "src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py"
+      ],
+      "mentions": 5,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "all",
+      "files": [
+        "model.py",
+        "src/quaternion_ops.py",
+        "tests/test_ucf101_dataset.py"
+      ],
+      "mentions": 4,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "make",
+      "files": [
+        "model.py",
+        "src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py"
+      ],
+      "mentions": 4,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "topo",
+      "files": [
+        "app.py",
+        "model.py",
+        "src/ucf101_dataset.py"
+      ],
+      "mentions": 4,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "back",
+      "files": [
+        "model.py",
+        "src/quaternion_ops.py",
+        "src/ucf101_dataset.py"
+      ],
+      "mentions": 3,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "normalize",
+      "files": [
+        "model.py",
+        "src/quaternion_ops.py",
+        "src/ucf101_dataset.py"
+      ],
+      "mentions": 3,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "then",
+      "files": [
+        "model.py",
+        "src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py"
+      ],
+      "mentions": 3,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "uses",
+      "files": [
+        "model.py",
+        "src/quaternion_ops.py",
+        "src/ucf101_dataset.py"
+      ],
+      "mentions": 3,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "using",
+      "files": [
+        "model.py",
+        "src/quaternion_ops.py",
+        "src/ucf101_dataset.py"
+      ],
+      "mentions": 3,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "quaternion",
+      "files": [
+        "model.py",
+        "src/quaternion_ops.py"
+      ],
+      "mentions": 34,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "forward",
+      "files": [
+        "model.py",
+        "src/quaternion_ops.py"
+      ],
+      "mentions": 26,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "ucf101",
+      "files": [
+        "src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py"
+      ],
+      "mentions": 24,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "log",
+      "files": [
+        "model.py",
+        "src/quaternion_ops.py"
+      ],
+      "mentions": 18,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "product",
+      "files": [
+        "model.py",
+        "src/quaternion_ops.py"
+      ],
+      "mentions": 16,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "behaviour",
+      "files": [
+        "model.py",
+        "tests/test_ucf101_dataset.py"
+      ],
+      "mentions": 15,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "set",
+      "files": [
+        "model.py",
+        "tests/test_ucf101_dataset.py"
+      ],
+      "mentions": 15,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "temporal",
+      "files": [
+        "model.py",
+        "src/ucf101_dataset.py"
+      ],
+      "mentions": 14,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "exp",
+      "files": [
+        "model.py",
+        "src/quaternion_ops.py"
+      ],
+      "mentions": 12,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "lie",
+      "files": [
+        "model.py",
+        "src/quaternion_ops.py"
+      ],
+      "mentions": 12,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "raises",
+      "files": [
+        "model.py",
+        "tests/test_ucf101_dataset.py"
+      ],
+      "mentions": 11,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "space",
+      "files": [
+        "model.py",
+        "src/quaternion_ops.py"
+      ],
+      "mentions": 11,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "generator",
+      "files": [
+        "app.py",
+        "model.py"
+      ],
+      "mentions": 10,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "hamilton",
+      "files": [
+        "model.py",
+        "src/quaternion_ops.py"
+      ],
+      "mentions": 10,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "algebra",
+      "files": [
+        "model.py",
+        "src/quaternion_ops.py"
+      ],
+      "mentions": 9,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "converts",
+      "files": [
+        "model.py",
+        "src/quaternion_ops.py"
+      ],
+      "mentions": 9,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "decoder",
+      "files": [
+        "model.py",
+        "src/ucf101_dataset.py"
+      ],
+      "mentions": 9,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "pixel",
+      "files": [
+        "model.py",
+        "tests/test_ucf101_dataset.py"
+      ],
+      "mentions": 7,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "valid",
+      "files": [
+        "model.py",
+        "tests/test_ucf101_dataset.py"
+      ],
+      "mentions": 7,
+      "confidence": "EXTRACTED"
+    },
+    {
+      "name": "cache",
+      "files": [
+        "model.py",
+        "src/ucf101_dataset.py"
+      ],
+      "mentions": 6,
+      "confidence": "EXTRACTED"
+    }
+  ],
+  "relations": [
+    {
+      "source": "config",
+      "target": "back",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "config",
+      "target": "must",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "config",
+      "target": "normalize",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "config",
+      "target": "output",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "config",
+      "target": "tensors",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "config",
+      "target": "uses",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "config",
+      "target": "using",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "config",
+      "target": "via",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "create",
+      "target": "back",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "create",
+      "target": "must",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "create",
+      "target": "normalize",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "create",
+      "target": "output",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "create",
+      "target": "tensors",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "create",
+      "target": "uses",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "create",
+      "target": "using",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "create",
+      "target": "via",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "dataset",
+      "target": "back",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "dataset",
+      "target": "must",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "dataset",
+      "target": "normalize",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "dataset",
+      "target": "output",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "dataset",
+      "target": "tensors",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "dataset",
+      "target": "uses",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "dataset",
+      "target": "using",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "dataset",
+      "target": "via",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "loader",
+      "target": "back",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "loader",
+      "target": "must",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "loader",
+      "target": "normalize",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "loader",
+      "target": "output",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "loader",
+      "target": "tensors",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "loader",
+      "target": "uses",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "loader",
+      "target": "using",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "loader",
+      "target": "via",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "trainer",
+      "target": "back",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "trainer",
+      "target": "must",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "trainer",
+      "target": "normalize",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "trainer",
+      "target": "output",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "trainer",
+      "target": "tensors",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "trainer",
+      "target": "uses",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "trainer",
+      "target": "using",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "trainer",
+      "target": "via",
+      "verb": "depends_on",
+      "strength": 1.0,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "all",
+      "target": "back",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "all",
+      "target": "must",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "all",
+      "target": "normalize",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "all",
+      "target": "output",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "all",
+      "target": "tensors",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "all",
+      "target": "uses",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "all",
+      "target": "using",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "all",
+      "target": "via",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "behaviour",
+      "target": "back",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "behaviour",
+      "target": "must",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "behaviour",
+      "target": "normalize",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "behaviour",
+      "target": "output",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "behaviour",
+      "target": "tensors",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "behaviour",
+      "target": "uses",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "behaviour",
+      "target": "using",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "behaviour",
+      "target": "via",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "model.py->src/quaternion_ops.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "config",
+      "target": "cache",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "config",
+      "target": "create",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "config",
+      "target": "data",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "config",
+      "target": "dataloader",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "config",
+      "target": "dataset",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "config",
+      "target": "decoder",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "config",
+      "target": "error",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "config",
+      "target": "files",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "config",
+      "target": "frames",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "config",
+      "target": "get",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "config",
+      "target": "getitem",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "config",
+      "target": "loader",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "config",
+      "target": "make",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "config",
+      "target": "model",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "config",
+      "target": "shape",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "config",
+      "target": "size",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "config",
+      "target": "temporal",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "config",
+      "target": "then",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "config",
+      "target": "topo",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "config",
+      "target": "train",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "config",
+      "target": "trainer",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "config",
+      "target": "video",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "config",
+      "target": "when",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "create",
+      "target": "cache",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "create",
+      "target": "config",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "create",
+      "target": "data",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "create",
+      "target": "dataloader",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "create",
+      "target": "dataset",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "create",
+      "target": "decoder",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "create",
+      "target": "error",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "create",
+      "target": "files",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "create",
+      "target": "frames",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "create",
+      "target": "get",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "create",
+      "target": "getitem",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "create",
+      "target": "loader",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "create",
+      "target": "make",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "create",
+      "target": "model",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "create",
+      "target": "shape",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "create",
+      "target": "size",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "create",
+      "target": "temporal",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "create",
+      "target": "then",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "create",
+      "target": "topo",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "create",
+      "target": "train",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    },
+    {
+      "source": "create",
+      "target": "trainer",
+      "verb": "depends_on",
+      "strength": 0.75,
+      "confidence": "INFERRED",
+      "evidence": [
+        "app.py->model.py",
+        "model.py->src/ucf101_dataset.py",
+        "tests/test_ucf101_dataset.py->src/ucf101_dataset.py"
+      ]
+    }
+  ],
+  "dialectic": [
+    "Thesis: `algebra` centralizes 2 files; Antithesis: `all` pulls 3 files with 2 shared (Jaccard 0.67); Synthesis: should they merge, split by layer, or keep `bridges` explicit?",
+    "Thesis: `algebra` centralizes 2 files; Antithesis: `back` pulls 3 files with 2 shared (Jaccard 0.67); Synthesis: should they merge, split by layer, or keep `bridges` explicit?",
+    "Thesis: `algebra` centralizes 2 files; Antithesis: `converts` pulls 2 files with 2 shared (Jaccard 1.00); Synthesis: should they merge, split by layer, or keep `bridges` explicit?",
+    "Thesis: `algebra` centralizes 2 files; Antithesis: `exp` pulls 2 files with 2 shared (Jaccard 1.00); Synthesis: should they merge, split by layer, or keep `bridges` explicit?",
+    "Thesis: `algebra` centralizes 2 files; Antithesis: `forward` pulls 2 files with 2 shared (Jaccard 1.00); Synthesis: should they merge, split by layer, or keep `bridges` explicit?",
+    "Thesis: `algebra` centralizes 2 files; Antithesis: `hamilton` pulls 2 files with 2 shared (Jaccard 1.00); Synthesis: should they merge, split by layer, or keep `bridges` explicit?",
+    "Thesis: `algebra` centralizes 2 files; Antithesis: `lie` pulls 2 files with 2 shared (Jaccard 1.00); Synthesis: should they merge, split by layer, or keep `bridges` explicit?",
+    "Thesis: `algebra` centralizes 2 files; Antithesis: `log` pulls 2 files with 2 shared (Jaccard 1.00); Synthesis: should they merge, split by layer, or keep `bridges` explicit?",
+    "Thesis: `algebra` centralizes 2 files; Antithesis: `must` pulls 3 files with 2 shared (Jaccard 0.67); Synthesis: should they merge, split by layer, or keep `bridges` explicit?",
+    "Thesis: `algebra` centralizes 2 files; Antithesis: `normalize` pulls 3 files with 2 shared (Jaccard 0.67); Synthesis: should they merge, split by layer, or keep `bridges` explicit?"
+  ]
+}
